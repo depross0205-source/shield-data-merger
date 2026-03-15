@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>矛與盾 — 歷史數據整併工具</title>
+<title>矛與盾 — 歷史數據整併工具 v2.0</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;600;700&display=swap');
   
@@ -18,45 +18,48 @@
     background: var(--bg); color: var(--text);
     padding: 40px 20px; line-height: 1.6;
   }
-  .wrap { max-width: 700px; margin: 0 auto; }
+  .wrap { max-width: 750px; margin: 0 auto; }
   .hdr-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
   .hdr-sub { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
   
   .upload-grid {
-    display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px;
   }
+  @media (max-width: 600px) { .upload-grid { grid-template-columns: 1fr; } }
+
   .file-box {
     background: var(--surface); border: 1px solid var(--border);
-    padding: 16px 20px; border-radius: 4px;
-    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px; border-radius: 4px;
+    display: flex; flex-direction: column; gap: 12px;
   }
   .file-box .info { display: flex; flex-direction: column; }
   .file-box .name { font-weight: 600; font-size: 15px; color: var(--accent); }
-  .file-box .desc { font-size: 12px; color: var(--muted); margin-top: 4px; font-family: 'IBM Plex Mono', monospace;}
+  .file-box .desc { font-size: 11px; color: var(--muted); margin-top: 4px; font-family: 'IBM Plex Mono', monospace;}
   
   input[type="file"] {
-    font-size: 13px; color: var(--text);
+    font-size: 12px; color: var(--text);
     background: var(--bg); border: 1px solid var(--border);
-    padding: 6px; border-radius: 3px; cursor: pointer;
+    padding: 4px; border-radius: 3px; cursor: pointer; width: 100%;
   }
   input[type="file"]::-webkit-file-upload-button {
     background: var(--border); color: var(--text);
-    border: none; padding: 6px 12px; cursor: pointer; font-family: inherit;
+    border: none; padding: 4px 8px; cursor: pointer; font-family: inherit; margin-right: 8px;
   }
   
   .btn {
-    display: block; width: 100%; padding: 14px; font-size: 16px; font-weight: 700;
+    display: block; width: 100%; padding: 16px; font-size: 16px; font-weight: 700;
     background: var(--green); color: #000; border: none; border-radius: 4px;
     cursor: pointer; transition: 0.2s; font-family: inherit; text-align: center;
   }
-  .btn:hover { background: #00ffb3; }
-  .btn:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+  .btn:hover { background: #00ffb3; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
 
   #log {
     margin-top: 24px; padding: 16px; background: var(--surface);
     border: 1px solid var(--border); border-radius: 4px;
     font-family: 'IBM Plex Mono', monospace; font-size: 12px;
     color: var(--green); white-space: pre-wrap; display: none;
+    max-height: 250px; overflow-y: auto;
   }
   .err { color: var(--red); }
 </style>
@@ -64,98 +67,113 @@
 <body>
 
 <div class="wrap">
-  <div class="hdr-title">🛡️ 歷史數據整併工具</div>
-  <div class="hdr-sub">將多個 CSV 檔上傳，系統將以 SP500 日期為基準，自動進行月度數據的線性插值與對齊，並匯出完整大表。</div>
+  <div class="hdr-title">🛡️ 歷史數據整併工具 v2.0</div>
+  <div class="hdr-sub">以 S&P 500 日期為基準，自動進行多維度數據（含等權重指數）的線性插值與對齊。</div>
 
   <div class="upload-grid">
     <div class="file-box">
       <div class="info">
-        <span class="name">1. SP500 (日資料)</span>
-        <span class="desc">格式: YYYY-MM-DD, 數值</span>
+        <span class="name">1. SP500 (基準日資料)</span>
+        <span class="desc">YYYY-MM-DD, Value</span>
       </div>
       <input type="file" id="f_sp" accept=".csv">
     </div>
+
     <div class="file-box">
       <div class="info">
-        <span class="name">2. HY Spread (月資料)</span>
-        <span class="desc">格式: YYYY-MM, 數值</span>
+        <span class="name">2. SP500EW (日資料)</span>
+        <span class="desc">YYYY-MM-DD, Value</span>
+      </div>
+      <input type="file" id="f_spew" accept=".csv">
+    </div>
+
+    <div class="file-box">
+      <div class="info">
+        <span class="name">3. HY Spread (月資料)</span>
+        <span class="desc">YYYY-MM, Value</span>
       </div>
       <input type="file" id="f_hy" accept=".csv">
     </div>
+
     <div class="file-box">
       <div class="info">
-        <span class="name">3. TIPS 10Y (月資料)</span>
-        <span class="desc">格式: YYYY-MM, 數值</span>
+        <span class="name">4. TIPS 10Y (月資料)</span>
+        <span class="desc">YYYY-MM, Value</span>
       </div>
       <input type="file" id="f_tips" accept=".csv">
     </div>
+
     <div class="file-box">
       <div class="info">
-        <span class="name">4. VIX (月資料)</span>
-        <span class="desc">格式: YYYY-MM, 數值</span>
+        <span class="name">5. VIX (月資料)</span>
+        <span class="desc">YYYY-MM, Value</span>
       </div>
       <input type="file" id="f_vix" accept=".csv">
     </div>
+
     <div class="file-box">
       <div class="info">
-        <span class="name">5. CAPE (月資料)</span>
-        <span class="desc">格式: YYYY-MM, 數值</span>
+        <span class="name">6. CAPE (月資料)</span>
+        <span class="desc">YYYY-MM, Value</span>
       </div>
       <input type="file" id="f_cape" accept=".csv">
     </div>
   </div>
 
-  <button class="btn" id="btnMerge" onclick="processMerge()">⬇ 執行合併並下載 CSV</button>
+  <button class="btn" id="btnMerge" onclick="processMerge()">⬇ 執行合併並下載數據庫</button>
   <div id="log"></div>
 </div>
 
 <script>
-// 讀取檔案轉為陣列的輔助函數
+/**
+ * 規則 1 & 2 實踐：邏輯確保資料有序，若無法對齊則進行邊界填充，而非猜測。
+ * 信心程度：10/10 (結構化擴展)
+ */
+
 function readFileAsCSV(file) {
   return new Promise((resolve, reject) => {
-    if (!file) { reject("未選擇檔案"); return; }
+    if (!file) { reject(`檔案讀取失敗：未選擇檔案`); return; }
     const reader = new FileReader();
     reader.onload = (e) => {
       const lines = e.target.result.trim().split('\n');
       const data = [];
-      for (let i = 1; i < lines.length; i++) { // 跳過第一行 Header
+      for (let i = 1; i < lines.length; i++) {
         const parts = lines[i].trim().split(',');
         if (parts.length >= 2) {
           data.push([parts[0], parseFloat(parts[1])]);
         }
       }
+      // 確保資料按日期升冪排序
+      data.sort((a, b) => new Date(a[0]) - new Date(b[0]));
       resolve(data);
     };
-    reader.onerror = () => reject("讀取失敗");
+    reader.onerror = () => reject("讀取 CSV 失敗");
     reader.readAsText(file);
   });
 }
 
-// 線性插值函數 (給 HY, TIPS, VIX 使用)
 function interpolate(targetDateStr, anchorData) {
   const targetTime = new Date(targetDateStr).getTime();
   
   for (let i = 0; i < anchorData.length - 1; i++) {
-    // 判斷日期格式是 YYYY-MM 還是 YYYY-MM-DD
     const d0Str = anchorData[i][0].length === 7 ? anchorData[i][0] + '-01' : anchorData[i][0];
     const d1Str = anchorData[i+1][0].length === 7 ? anchorData[i+1][0] + '-01' : anchorData[i+1][0];
     
     const t0 = new Date(d0Str).getTime();
     const t1 = new Date(d1Str).getTime();
     
-    if (targetTime >= t0 && targetTime < t1) {
+    if (targetTime >= t0 && targetTime <= t1) {
+      if (t0 === t1) return anchorData[i][1];
       const ratio = (targetTime - t0) / (t1 - t0);
       return anchorData[i][1] + ratio * (anchorData[i+1][1] - anchorData[i][1]);
     }
   }
   
-  // 若超出範圍，取最前或最後的數值 (Forward/Backward Fill)
   const tFirst = new Date(anchorData[0][0].length === 7 ? anchorData[0][0] + '-01' : anchorData[0][0]).getTime();
   if (targetTime < tFirst) return anchorData[0][1];
   return anchorData[anchorData.length - 1][1];
 }
 
-// 階梯函數 (給 CAPE 使用，同月份直接對應)
 function getStepValue(targetDateStr, anchorData) {
   const ym = targetDateStr.slice(0, 7);
   let bestVal = anchorData[0][1];
@@ -172,66 +190,62 @@ function getStepValue(targetDateStr, anchorData) {
 function printLog(msg, isErr = false) {
   const el = document.getElementById('log');
   el.style.display = 'block';
-  el.innerHTML += `<div class="${isErr ? 'err' : ''}">${msg}</div>`;
+  el.innerHTML += `<div class="${isErr ? 'err' : ''}">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
 }
 
 async function processMerge() {
   document.getElementById('log').innerHTML = '';
-  document.getElementById('log').style.display = 'none';
-  
-  const f_sp = document.getElementById('f_sp').files[0];
-  const f_hy = document.getElementById('f_hy').files[0];
-  const f_tips = document.getElementById('f_tips').files[0];
-  const f_vix = document.getElementById('f_vix').files[0];
-  const f_cape = document.getElementById('f_cape').files[0];
+  const files = {
+    sp: document.getElementById('f_sp').files[0],
+    spew: document.getElementById('f_spew').files[0],
+    hy: document.getElementById('f_hy').files[0],
+    tips: document.getElementById('f_tips').files[0],
+    vix: document.getElementById('f_vix').files[0],
+    cape: document.getElementById('f_cape').files[0]
+  };
 
-  if (!f_sp || !f_hy || !f_tips || !f_vix || !f_cape) {
-    printLog('錯誤：請確認 5 個欄位皆已選取 CSV 檔案。', true);
+  if (Object.values(files).some(f => !f)) {
+    printLog('錯誤：請確認 6 個欄位皆已選取 CSV 檔案。', true);
     return;
   }
 
   try {
-    printLog('正在讀取檔案...');
-    const [spData, hyData, tipsData, vixData, capeData] = await Promise.all([
-      readFileAsCSV(f_sp), readFileAsCSV(f_hy), readFileAsCSV(f_tips),
-      readFileAsCSV(f_vix), readFileAsCSV(f_cape)
+    printLog('正在讀取並優化排序 6 個數據源...');
+    const [sp, spew, hy, tips, vix, cape] = await Promise.all([
+      readFileAsCSV(files.sp), readFileAsCSV(files.spew), 
+      readFileAsCSV(files.hy), readFileAsCSV(files.tips),
+      readFileAsCSV(files.vix), readFileAsCSV(files.cape)
     ]);
 
-    printLog(`讀取完成。基準日資料(SP500)共 ${spData.length} 筆。`);
-    printLog('正在進行時間序列對齊與線性插值運算...');
+    printLog(`基準日 (SP500) 載入 ${sp.length} 筆資料。`);
+    printLog('開始執行多維度插值與對齊...');
 
-    let csvContent = "Date,SP500,HY_Spread,TIPS_10Y,VIX,CAPE\n";
+    let csvContent = "Date,SP500,SP500EW,HY_Spread,TIPS_10Y,VIX,CAPE\n";
 
-    // 以 SP500 的日期作為主迴圈
-    for (let i = 0; i < spData.length; i++) {
-      const d = spData[i][0];
-      const sp = spData[i][1].toFixed(4);
-      
-      const hy = interpolate(d, hyData).toFixed(2);
-      const tips = interpolate(d, tipsData).toFixed(2);
-      const vix = interpolate(d, vixData).toFixed(1);
-      const cape = getStepValue(d, capeData).toFixed(2);
+    for (let i = 0; i < sp.length; i++) {
+      const d = sp[i][0];
+      const val_sp = sp[i][1].toFixed(4);
+      const val_spew = interpolate(d, spew).toFixed(4);
+      const val_hy = interpolate(d, hy).toFixed(2);
+      const val_tips = interpolate(d, tips).toFixed(2);
+      const val_vix = interpolate(d, vix).toFixed(2);
+      const val_cape = getStepValue(d, cape).toFixed(2);
 
-      csvContent += `${d},${sp},${hy},${tips},${vix},${cape}\n`;
+      csvContent += `${d},${val_sp},${val_spew},${val_hy},${val_tips},${val_vix},${val_cape}\n`;
     }
 
-    printLog('合併完成！正在觸發下載...');
+    printLog('合併完成！正在準備下載檔案...');
 
-    // 觸發下載
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", "Shield_Merged_Database.csv");
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
+    link.href = URL.createObjectURL(blob);
+    link.download = `Shield_Merged_v2_${new Date().toISOString().slice(0,10)}.csv`;
     link.click();
-    document.body.removeChild(link);
     
-    printLog('✅ 下載已啟動。');
+    printLog('✅ 下載任務已啟動。');
 
   } catch (error) {
-    printLog('發生錯誤：' + error, true);
+    printLog('系統異常：' + error, true);
   }
 }
 </script>
