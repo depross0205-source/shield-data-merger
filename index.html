@@ -2,253 +2,66 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>矛與盾 — 歷史數據整併工具 v2.0</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>矛與盾 V7.8 — 資料庫管理版</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;600;700&display=swap');
-  
-  :root {
-    --bg: #0a0c10; --surface: #12161f; --border: #252d3d;
-    --text: #e2eaf8; --muted: #6b7a99; --green: #00e5a0;
-    --accent: #7eb8ff; --red: #ff4d6d;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'IBM Plex Sans', sans-serif;
-    background: var(--bg); color: var(--text);
-    padding: 40px 20px; line-height: 1.6;
-  }
-  .wrap { max-width: 750px; margin: 0 auto; }
-  .hdr-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-  .hdr-sub { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
-  
-  .upload-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px;
-  }
-  @media (max-width: 600px) { .upload-grid { grid-template-columns: 1fr; } }
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;600;700;900&display=swap');
 
-  .file-box {
-    background: var(--surface); border: 1px solid var(--border);
-    padding: 16px; border-radius: 4px;
-    display: flex; flex-direction: column; gap: 12px;
-  }
-  .file-box .info { display: flex; flex-direction: column; }
-  .file-box .name { font-weight: 600; font-size: 15px; color: var(--accent); }
-  .file-box .desc { font-size: 11px; color: var(--muted); margin-top: 4px; font-family: 'IBM Plex Mono', monospace;}
-  
-  input[type="file"] {
-    font-size: 12px; color: var(--text);
-    background: var(--bg); border: 1px solid var(--border);
-    padding: 4px; border-radius: 3px; cursor: pointer; width: 100%;
-  }
-  input[type="file"]::-webkit-file-upload-button {
-    background: var(--border); color: var(--text);
-    border: none; padding: 4px 8px; cursor: pointer; font-family: inherit; margin-right: 8px;
-  }
-  
-  .btn {
-    display: block; width: 100%; padding: 16px; font-size: 16px; font-weight: 700;
-    background: var(--green); color: #000; border: none; border-radius: 4px;
-    cursor: pointer; transition: 0.2s; font-family: inherit; text-align: center;
-  }
-  .btn:hover { background: #00ffb3; transform: translateY(-1px); }
-  .btn:active { transform: translateY(0); }
-
-  #log {
-    margin-top: 24px; padding: 16px; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 4px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px;
-    color: var(--green); white-space: pre-wrap; display: none;
-    max-height: 250px; overflow-y: auto;
-  }
-  .err { color: var(--red); }
-</style>
-</head>
-<body>
-
-<div class="wrap">
-  <div class="hdr-title">🛡️ 歷史數據整併工具 v2.0</div>
-  <div class="hdr-sub">以 S&P 500 日期為基準，自動進行多維度數據（含等權重指數）的線性插值與對齊。</div>
-
-  <div class="upload-grid">
-    <div class="file-box">
-      <div class="info">
-        <span class="name">1. SP500 (基準日資料)</span>
-        <span class="desc">YYYY-MM-DD, Value</span>
-      </div>
-      <input type="file" id="f_sp" accept=".csv">
-    </div>
-
-    <div class="file-box">
-      <div class="info">
-        <span class="name">2. SP500EW (日資料)</span>
-        <span class="desc">YYYY-MM-DD, Value</span>
-      </div>
-      <input type="file" id="f_spew" accept=".csv">
-    </div>
-
-    <div class="file-box">
-      <div class="info">
-        <span class="name">3. HY Spread (月資料)</span>
-        <span class="desc">YYYY-MM, Value</span>
-      </div>
-      <input type="file" id="f_hy" accept=".csv">
-    </div>
-
-    <div class="file-box">
-      <div class="info">
-        <span class="name">4. TIPS 10Y (月資料)</span>
-        <span class="desc">YYYY-MM, Value</span>
-      </div>
-      <input type="file" id="f_tips" accept=".csv">
-    </div>
-
-    <div class="file-box">
-      <div class="info">
-        <span class="name">5. VIX (月資料)</span>
-        <span class="desc">YYYY-MM, Value</span>
-      </div>
-      <input type="file" id="f_vix" accept=".csv">
-    </div>
-
-    <div class="file-box">
-      <div class="info">
-        <span class="name">6. CAPE (月資料)</span>
-        <span class="desc">YYYY-MM, Value</span>
-      </div>
-      <input type="file" id="f_cape" accept=".csv">
-    </div>
-  </div>
-
-  <button class="btn" id="btnMerge" onclick="processMerge()">⬇ 執行合併並下載數據庫</button>
-  <div id="log"></div>
-</div>
-
-<script>
-/**
- * 規則 1 & 2 實踐：邏輯確保資料有序，若無法對齊則進行邊界填充，而非猜測。
- * 信心程度：10/10 (結構化擴展)
- */
-
-function readFileAsCSV(file) {
-  return new Promise((resolve, reject) => {
-    if (!file) { reject(`檔案讀取失敗：未選擇檔案`); return; }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const lines = e.target.result.trim().split('\n');
-      const data = [];
-      for (let i = 1; i < lines.length; i++) {
-        const parts = lines[i].trim().split(',');
-        if (parts.length >= 2) {
-          data.push([parts[0], parseFloat(parts[1])]);
-        }
-      }
-      // 確保資料按日期升冪排序
-      data.sort((a, b) => new Date(a[0]) - new Date(b[0]));
-      resolve(data);
-    };
-    reader.onerror = () => reject("讀取 CSV 失敗");
-    reader.readAsText(file);
-  });
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+--bg:#0a0c10; --surface:#12161f; --surface2:#1a2030; --border:#252d3d;
+--border-hi:#3a4560; --text:#e2eaf8; --muted:#6b7a99; --dim:#3d4a66;
+--green:#00e5a0; --green-dim:#003d2a; --red:#ff4d6d; --red-dim:#3d0012;
+--yellow:#ffb830; --yellow-dim:#3d2900; --blue:#4d9fff; --blue-dim:#001a3d;
+--accent:#7eb8ff; --gold:#ffd166; --white:#f8faff;
 }
 
-function interpolate(targetDateStr, anchorData) {
-  const targetTime = new Date(targetDateStr).getTime();
-  
-  for (let i = 0; i < anchorData.length - 1; i++) {
-    const d0Str = anchorData[i][0].length === 7 ? anchorData[i][0] + '-01' : anchorData[i][0];
-    const d1Str = anchorData[i+1][0].length === 7 ? anchorData[i+1][0] + '-01' : anchorData[i+1][0];
-    
-    const t0 = new Date(d0Str).getTime();
-    const t1 = new Date(d1Str).getTime();
-    
-    if (targetTime >= t0 && targetTime <= t1) {
-      if (t0 === t1) return anchorData[i][1];
-      const ratio = (targetTime - t0) / (t1 - t0);
-      return anchorData[i][1] + ratio * (anchorData[i+1][1] - anchorData[i][1]);
-    }
-  }
-  
-  const tFirst = new Date(anchorData[0][0].length === 7 ? anchorData[0][0] + '-01' : anchorData[0][0]).getTime();
-  if (targetTime < tFirst) return anchorData[0][1];
-  return anchorData[anchorData.length - 1][1];
+body{
+font-family:'IBM Plex Sans',sans-serif; background:var(--bg); color:var(--text);
+min-height:100vh; padding:24px 20px; line-height:1.6;
 }
+.mono{font-family:'IBM Plex Mono',monospace;}
+.wrap{max-width:1200px;margin:0 auto;}
 
-function getStepValue(targetDateStr, anchorData) {
-  const ym = targetDateStr.slice(0, 7);
-  let bestVal = anchorData[0][1];
-  for (let i = 0; i < anchorData.length; i++) {
-    if (anchorData[i][0] <= ym) {
-      bestVal = anchorData[i][1];
-    } else {
-      break;
-    }
-  }
-  return bestVal;
+/* ── Header ── */
+.hdr{
+display:flex;justify-content:space-between;align-items:center;
+border-bottom:2px solid var(--border-hi); padding-bottom:18px;margin-bottom:20px;
 }
+.hdr-title{font-size:22px;font-weight:900;color:var(--white);display:flex;align-items:center;gap:10px;}
+.hdr-title span.v{font-size:12px;font-weight:600;background:var(--green);color:#000;padding:2px 8px;border-radius:3px;}
+.hdr-sub{font-size:13px;color:var(--muted);margin-top:4px;}
 
-function printLog(msg, isErr = false) {
-  const el = document.getElementById('log');
-  el.style.display = 'block';
-  el.innerHTML += `<div class="${isErr ? 'err' : ''}">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
+/* ── 控制台與 Tabs ── */
+.tabs{display:flex;gap:0;margin-bottom:20px;border-bottom:2px solid var(--border); overflow-x: auto; white-space: nowrap;}
+.tab{
+padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);
+border:none;border-bottom:3px solid transparent;background:none;transition:0.15s;
 }
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.panel{display:none;}.panel.active{display:block;}
 
-async function processMerge() {
-  document.getElementById('log').innerHTML = '';
-  const files = {
-    sp: document.getElementById('f_sp').files[0],
-    spew: document.getElementById('f_spew').files[0],
-    hy: document.getElementById('f_hy').files[0],
-    tips: document.getElementById('f_tips').files[0],
-    vix: document.getElementById('f_vix').files[0],
-    cape: document.getElementById('f_cape').files[0]
-  };
+.btn{padding:10px 24px;font-weight:700;cursor:pointer;border:2px solid;transition:0.15s;font-family:inherit;}
+.btn-primary{background:var(--green);color:#000;border-color:var(--green); width: 100%; font-size: 15px;}
+.btn-primary:hover{background:#00ffb3;}
+.btn-outline{background:transparent;color:var(--accent);border-color:var(--accent); width: 100%; font-size: 15px;}
+.btn-outline:hover{background:var(--accent);color:#000;}
 
-  if (Object.values(files).some(f => !f)) {
-    printLog('錯誤：請確認 6 個欄位皆已選取 CSV 檔案。', true);
-    return;
-  }
+/* ── 資料庫管理 UI ── */
+.db-container { display: flex; gap: 20px; flex-wrap: wrap; }
+.db-box { flex: 1; background: var(--surface); border: 1px solid var(--border); padding: 20px; min-width: 300px; }
+.db-box h3 { font-size: 14px; color: var(--accent); margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px;}
+.db-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.db-item { display: flex; flex-direction: column; gap: 4px; }
+.db-item label { font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+.db-item input { background: var(--bg); border: 1px solid var(--border-hi); color: var(--white); padding: 8px; font-family: 'IBM Plex Mono'; font-size: 14px; }
+.db-item input:focus { outline: none; border-color: var(--accent); }
 
-  try {
-    printLog('正在讀取並優化排序 6 個數據源...');
-    const [sp, spew, hy, tips, vix, cape] = await Promise.all([
-      readFileAsCSV(files.sp), readFileAsCSV(files.spew), 
-      readFileAsCSV(files.hy), readFileAsCSV(files.tips),
-      readFileAsCSV(files.vix), readFileAsCSV(files.cape)
-    ]);
-
-    printLog(`基準日 (SP500) 載入 ${sp.length} 筆資料。`);
-    printLog('開始執行多維度插值與對齊...');
-
-    let csvContent = "Date,SP500,SP500EW,HY_Spread,TIPS_10Y,VIX,CAPE\n";
-
-    for (let i = 0; i < sp.length; i++) {
-      const d = sp[i][0];
-      const val_sp = sp[i][1].toFixed(4);
-      const val_spew = interpolate(d, spew).toFixed(4);
-      const val_hy = interpolate(d, hy).toFixed(2);
-      const val_tips = interpolate(d, tips).toFixed(2);
-      const val_vix = interpolate(d, vix).toFixed(2);
-      const val_cape = getStepValue(d, cape).toFixed(2);
-
-      csvContent += `${d},${val_sp},${val_spew},${val_hy},${val_tips},${val_vix},${val_cape}\n`;
-    }
-
-    printLog('合併完成！正在準備下載檔案...');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `Shield_Merged_v2_${new Date().toISOString().slice(0,10)}.csv`;
-    link.click();
-    
-    printLog('✅ 下載任務已啟動。');
-
-  } catch (error) {
-    printLog('系統異常：' + error, true);
-  }
-}
-</script>
-
-</body>
-</html>
+/* ── 儀表板組件 ── */
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.metric-card { background: var(--surface); border: 1px solid var(--border); padding: 16px; text-align: center; }
+.metric-card.m-a { border-top: 3px solid var(--yellow); }
+.metric-card.m-b { border-top: 3px solid var(--green); }
+.metric-card.m-bh { border-top: 3px solid var(--muted); }
+.m-title { font-size: 13px; color: var(--muted); font-weight: 700; margin-bottom: 12px; }
+.m-row { display: flex; justify-content: space-between
