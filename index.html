@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>矛與盾 V7.10 — 自動補齊與趨勢版</title>
+<title>矛與盾 V7.11 — 真實週線與自動補齊版</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;600;700;900&display=swap');
 
@@ -87,8 +87,8 @@ input[type="file"]{display:none;}
 <div class="wrap">
   <div class="hdr">
     <div class="hdr-left">
-      <div class="hdr-title">🛡️ 矛與盾 <span class="v">V7.10 自動補齊版</span></div>
-      <div class="hdr-sub">無縫補齊斷層 ｜ 趨勢動能追蹤 ｜ 獨立 Proxy 支援</div>
+      <div class="hdr-title">🛡️ 矛與盾 <span class="v">V7.11 真實週線版</span></div>
+      <div class="hdr-sub">真實週線 RSI 取樣 ｜ 無縫補齊斷層 ｜ 趨勢動能追蹤</div>
     </div>
     <div id="dataSourceBadge" style="font-size:12px;padding:4px 12px;border:1px solid var(--border-hi);color:var(--muted);font-family:monospace;">● 初始數據模式</div>
   </div>
@@ -180,7 +180,7 @@ input[type="file"]{display:none;}
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;background:var(--surface);padding:12px;border:1px solid var(--border);">
         <div style="font-size:11px;color:var(--accent);text-transform:uppercase;font-weight:700;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:4px;">短打與倉位</div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;"><span>RSI (<) / VIX (≥)</span><div style="display:flex;gap:4px;"><input type="number" id="cpRsi" value="35" style="width:45px;"><input type="number" id="cpVix" value="35" style="width:45px;"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;"><span>週RSI(<) / VIX(≥)</span><div style="display:flex;gap:4px;"><input type="number" id="cpRsi" value="35" style="width:45px;"><input type="number" id="cpVix" value="35" style="width:45px;"></div></div>
         <div style="display:flex;justify-content:space-between;font-size:13px;"><span>寬度Z (≤)</span><input type="number" id="cpBias" value="-2.0" step="0.1" style="width:60px;"></div>
         <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:4px;border-top:1px dashed var(--border);padding-top:4px;"><span>倉位(加/常/短)</span><div style="display:flex;gap:4px;"><input type="number" id="cpPosMax" value="1.5" step="0.1" style="width:40px;"><input type="number" id="cpPosBase" value="1.0" step="0.1" style="width:40px;"><input type="number" id="cpPosStrk" value="0.3" step="0.1" style="width:40px;"></div></div>
       </div>
@@ -374,7 +374,7 @@ function updateDatabase() {
   syncArrays();
 }
 
-// ── V7.10 升級：API 自動抓取與「前值填補」整併 ──
+// API 自動抓取與「前值填補」整併
 async function fetchWebData() {
   const key = document.getElementById('apiFredKey').value.trim();
   const proxy = document.getElementById('apiProxy').value.trim();
@@ -426,26 +426,22 @@ async function fetchWebData() {
     let updatedCount = 0;
     let newRecords = 0;
 
-    // 將股市開盤日排序，作為主體時間軸
     const sortedSpDates = Object.keys(spData).sort();
     
-    // 初始化前值緩存 (若第一天沒資料，預設給合理數字，很快會被覆蓋)
     let lastHy = 3.5;
     let lastTips = 1.5;
 
     sortedSpDates.forEach(d => {
-      // 1. 若當天 FRED 有數據，更新前值
       if(hyData[d] !== undefined) lastHy = hyData[d];
       if(tipsData[d] !== undefined) lastTips = tipsData[d];
 
-      // 2. 以股市開盤為準進行填寫 (保證每一天交易日都不漏)
       if(ewData[d] !== undefined && vixData[d] !== undefined) {
         const row = {
           d: d, 
           sp: parseFloat(spData[d].toFixed(4)), 
           ew: parseFloat(ewData[d].toFixed(4)), 
-          hy: parseFloat(lastHy.toFixed(2)),    // 自動填補
-          tips: parseFloat(lastTips.toFixed(2)), // 自動填補
+          hy: parseFloat(lastHy.toFixed(2)),    
+          tips: parseFloat(lastTips.toFixed(2)), 
           vix: parseFloat(vixData[d].toFixed(2)), 
           cape: cape
         };
@@ -556,14 +552,31 @@ function runBacktest() {
       const f5b = lerp(hyNow, 250, 600, 80, 20);
       
       let rsi = 50, zBias = 0;
-      if (i >= 14) {
-        let gains = 0, losses = 0;
-        for (let j = i - 13; j <= i; j++) {
-          let diff = SP[j] - SP[j - 1];
-          if (diff >= 0) gains += diff; else losses -= diff;
+      
+      // ── 精準週線 RSI (14週) 萃取演算法 ──
+      if (i >= 70) { 
+        let wCloses = [SP[i]]; 
+        for(let j = i - 1; j >= 0; j--) {
+            let dayOld = new Date(DATES[j]).getDay();
+            let dayNew = new Date(DATES[j+1]).getDay();
+            if(dayOld >= dayNew) { 
+                wCloses.push(SP[j]); 
+                if(wCloses.length === 15) break; 
+            }
         }
-        rsi = 100 - (100 / (1 + (gains / (losses || 1))));
+        if (wCloses.length === 15) {
+            wCloses.reverse(); 
+            let gains = 0, losses = 0;
+            for (let k = 1; k < 15; k++) {
+                let diff = wCloses[k] - wCloses[k-1];
+                if (diff >= 0) gains += diff;
+                else losses -= diff;
+            }
+            rsi = 100 - (100 / (1 + (gains / (losses || 1))));
+        }
       }
+
+      // 寬度 Z-Score
       if (i >= 20) {
         const slice = [];
         for(let j = i - 19; j <= i; j++) slice.push(EW[j] / SP[j]);
@@ -619,7 +632,7 @@ function runBacktest() {
       yrData[yr].Ae = eqA; yrData[yr].Be = eqB; yrData[yr].bhe = bh;
     }
     
-    // ── V7.10 升級：動態趨勢與前日對照介面 ──
+    // 動態趨勢與前日對照介面
     const getDeltaHtml = (s, ps) => {
       let diff = s - ps;
       let sign = diff >= 0 ? '+' + diff : diff;
