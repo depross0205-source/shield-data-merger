@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>矛與盾 V7.9 — 混合更新與歷程版</title>
+<title>矛與盾 V7.10 — 自動補齊與趨勢版</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;600;700;900&display=swap');
 
@@ -23,21 +23,13 @@ min-height:100vh; padding:24px 20px; line-height:1.6;
 .mono{font-family:'IBM Plex Mono',monospace;}
 .wrap{max-width:1200px;margin:0 auto;}
 
-/* ── Header ── */
-.hdr{
-display:flex;justify-content:space-between;align-items:center;
-border-bottom:2px solid var(--border-hi); padding-bottom:18px;margin-bottom:20px;
-}
+.hdr{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--border-hi); padding-bottom:18px;margin-bottom:20px;}
 .hdr-title{font-size:22px;font-weight:900;color:var(--white);display:flex;align-items:center;gap:10px;}
 .hdr-title span.v{font-size:12px;font-weight:600;background:var(--green);color:#000;padding:2px 8px;border-radius:3px;}
 .hdr-sub{font-size:13px;color:var(--muted);margin-top:4px;}
 
-/* ── 控制台與 Tabs ── */
 .tabs{display:flex;gap:0;margin-bottom:20px;border-bottom:2px solid var(--border); overflow-x: auto; white-space: nowrap;}
-.tab{
-padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);
-border:none;border-bottom:3px solid transparent;background:none;transition:0.15s;
-}
+.tab{padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);border:none;border-bottom:3px solid transparent;background:none;transition:0.15s;}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent);}
 .panel{display:none;}.panel.active{display:block;}
 
@@ -47,7 +39,6 @@ border:none;border-bottom:3px solid transparent;background:none;transition:0.15s
 .btn-outline{background:transparent;color:var(--accent);border-color:var(--accent); width: 100%; font-size: 15px;}
 .btn-outline:hover{background:var(--accent);color:#000;}
 
-/* ── 資料庫管理 UI ── */
 .db-container { display: flex; gap: 20px; flex-wrap: wrap; }
 .db-box { flex: 1; background: var(--surface); border: 1px solid var(--border); padding: 20px; min-width: 300px; }
 .db-box h3 { font-size: 14px; color: var(--accent); margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px;}
@@ -57,7 +48,6 @@ border:none;border-bottom:3px solid transparent;background:none;transition:0.15s
 .db-item input { background: var(--bg); border: 1px solid var(--border-hi); color: var(--white); padding: 8px; font-family: 'IBM Plex Mono'; font-size: 14px; }
 .db-item input:focus { outline: none; border-color: var(--accent); }
 
-/* ── 儀表板組件 ── */
 .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; margin-bottom: 20px; }
 .metric-card { background: var(--surface); border: 1px solid var(--border); padding: 16px; text-align: center; }
 .metric-card.m-a { border-top: 3px solid var(--yellow); }
@@ -97,8 +87,8 @@ input[type="file"]{display:none;}
 <div class="wrap">
   <div class="hdr">
     <div class="hdr-left">
-      <div class="hdr-title">🛡️ 矛與盾 <span class="v">V7.9 混合更新與歷程版</span></div>
-      <div class="hdr-sub">手動/自動並行 ｜ 轉換歷程明細 ｜ 無縫匯出</div>
+      <div class="hdr-title">🛡️ 矛與盾 <span class="v">V7.10 自動補齊版</span></div>
+      <div class="hdr-sub">無縫補齊斷層 ｜ 趨勢動能追蹤 ｜ 獨立 Proxy 支援</div>
     </div>
     <div id="dataSourceBadge" style="font-size:12px;padding:4px 12px;border:1px solid var(--border-hi);color:var(--muted);font-family:monospace;">● 初始數據模式</div>
   </div>
@@ -106,7 +96,7 @@ input[type="file"]{display:none;}
   <div class="tabs">
     <button class="tab active" onclick="switchTab(event,'database')">🗄️ 資料庫更新與匯出</button>
     <button class="tab" onclick="switchTab(event,'config')">⚙ 回測推演設定</button>
-    <button class="tab" onclick="switchTab(event,'result')">📊 總體績效</button>
+    <button class="tab" onclick="switchTab(event,'result')">📊 總體績效與最新狀態</button>
     <button class="tab" onclick="switchTab(event,'logs')">📜 轉換明細與歷程</button>
   </div>
 
@@ -121,8 +111,8 @@ input[type="file"]{display:none;}
     <div class="db-container">
       
       <div class="db-box" style="border-color:var(--blue-dim); background:rgba(0, 26, 61, 0.2);">
-        <h3>🤖 第二步 (選用)：自動連線更新 (API)</h3>
-        <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">輸入金鑰並透過瀏覽器抓取最新 2 年數據，自動與舊資料庫合併。可解決手動輸入的繁瑣。</p>
+        <h3>🤖 第二步 (選用)：自動連線更新與補齊</h3>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">系統將自動對照過去 2 年股市交易日。若債市休假，將啟動<b>前值自動填補</b>，確保資料庫零斷層。</p>
         
         <div class="db-grid">
           <div class="db-item" style="grid-column: span 2;">
@@ -130,8 +120,8 @@ input[type="file"]{display:none;}
             <input type="password" id="apiFredKey" placeholder="請填寫您的 32 位 FRED 金鑰">
           </div>
           <div class="db-item" style="grid-column: span 2;">
-            <label>CORS 代理伺服器 (Proxy) URL</label>
-            <input type="text" id="apiProxy" value="https://api.allorigins.win/raw?url=" placeholder="解決瀏覽器跨域阻擋，若有專屬 Proxy 可替換">
+            <label>專屬 Cloudflare Proxy URL</label>
+            <input type="text" id="apiProxy" value="" placeholder="例如: https://shield-proxy.xxx.workers.dev/?url=">
           </div>
           <div class="db-item" style="grid-column: span 2;">
             <label>手動輸入最新 CAPE 值</label>
@@ -205,14 +195,14 @@ input[type="file"]{display:none;}
   </div>
 
   <div class="panel" id="panel-result">
-    <div style="display:flex;gap:10px;margin-bottom:16px;">
-      <div style="flex:1;background:var(--surface);border:1px solid var(--border);padding:12px 16px;">
+    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:250px;background:var(--surface);border:1px solid var(--border);padding:12px 16px;">
         <div style="font-size:11px;color:var(--yellow);text-transform:uppercase;margin-bottom:4px;">方法 A 最新狀態</div>
-        <div id="liveA" style="font-family:'IBM Plex Mono';font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px;">--</div>
+        <div id="liveA" style="font-family:'IBM Plex Mono';font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;">--</div>
       </div>
-      <div style="flex:1;background:var(--surface);border:1px solid var(--border);padding:12px 16px;">
+      <div style="flex:1;min-width:250px;background:var(--surface);border:1px solid var(--border);padding:12px 16px;">
         <div style="font-size:11px;color:var(--green);text-transform:uppercase;margin-bottom:4px;">方法 B 最新狀態</div>
-        <div id="liveB" style="font-family:'IBM Plex Mono';font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px;">--</div>
+        <div id="liveB" style="font-family:'IBM Plex Mono';font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;">--</div>
       </div>
     </div>
 
@@ -356,7 +346,7 @@ function handleFileUpload(event) {
   reader.readAsText(file);
 }
 
-// ── 混合功能 1: 手動單日寫入 ──
+// 手動單日寫入
 function updateDatabase() {
   const dDate = document.getElementById('dbDate').value;
   if(!dDate) { alert("請輸入日期！"); return; }
@@ -384,20 +374,20 @@ function updateDatabase() {
   syncArrays();
 }
 
-// ── 混合功能 2: API 自動抓取與整併 ──
+// ── V7.10 升級：API 自動抓取與「前值填補」整併 ──
 async function fetchWebData() {
   const key = document.getElementById('apiFredKey').value.trim();
   const proxy = document.getElementById('apiProxy').value.trim();
   const cape = parseFloat(document.getElementById('apiCape').value) || 30.0;
   
   if(!key) { alert("請輸入 FRED API 金鑰！\n(若無金鑰，請至 FRED 官網免費申請)"); return; }
+  if(!proxy) { alert("請輸入您的 Proxy URL！\n請確認結尾包含 ?url="); return; }
   
   document.getElementById('loadingOverlay').classList.remove('hidden');
 
   try {
-    const getUrl = (targetUrl) => proxy ? proxy + encodeURIComponent(targetUrl) : targetUrl;
+    const getUrl = (targetUrl) => proxy + encodeURIComponent(targetUrl);
 
-    // 抓取 FRED
     const getFred = async (seriesId) => {
       const url = getUrl(`https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${key}&file_type=json`);
       const res = await fetch(url);
@@ -410,7 +400,6 @@ async function fetchWebData() {
       return dict;
     };
 
-    // 抓取 Yahoo Finance
     const getYf = async (ticker) => {
       const url = getUrl(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?range=2y&interval=1d`);
       const res = await fetch(url);
@@ -429,7 +418,6 @@ async function fetchWebData() {
       return dict;
     };
 
-    // 並發請求
     const [hyData, tipsData, spData, ewData, vixData] = await Promise.all([
       getFred('BAMLH0A0HYM2'), getFred('DFII10'),
       getYf('^GSPC'), getYf('RSP'), getYf('^VIX')
@@ -438,14 +426,28 @@ async function fetchWebData() {
     let updatedCount = 0;
     let newRecords = 0;
 
-    // 以標普 500 的交易日為基準，進行交集比對
-    Object.keys(spData).forEach(d => {
-      // 確保該日期有所有需要的數據
-      if(hyData[d] !== undefined && tipsData[d] !== undefined && vixData[d] !== undefined && ewData[d] !== undefined) {
+    // 將股市開盤日排序，作為主體時間軸
+    const sortedSpDates = Object.keys(spData).sort();
+    
+    // 初始化前值緩存 (若第一天沒資料，預設給合理數字，很快會被覆蓋)
+    let lastHy = 3.5;
+    let lastTips = 1.5;
+
+    sortedSpDates.forEach(d => {
+      // 1. 若當天 FRED 有數據，更新前值
+      if(hyData[d] !== undefined) lastHy = hyData[d];
+      if(tipsData[d] !== undefined) lastTips = tipsData[d];
+
+      // 2. 以股市開盤為準進行填寫 (保證每一天交易日都不漏)
+      if(ewData[d] !== undefined && vixData[d] !== undefined) {
         const row = {
-          d: d, sp: parseFloat(spData[d].toFixed(4)), ew: parseFloat(ewData[d].toFixed(4)), 
-          hy: parseFloat(hyData[d].toFixed(2)), tips: parseFloat(tipsData[d].toFixed(2)), 
-          vix: parseFloat(vixData[d].toFixed(2)), cape: cape
+          d: d, 
+          sp: parseFloat(spData[d].toFixed(4)), 
+          ew: parseFloat(ewData[d].toFixed(4)), 
+          hy: parseFloat(lastHy.toFixed(2)),    // 自動填補
+          tips: parseFloat(lastTips.toFixed(2)), // 自動填補
+          vix: parseFloat(vixData[d].toFixed(2)), 
+          cape: cape
         };
         
         const existingIdx = dbData.findIndex(x => x.d === d);
@@ -461,11 +463,11 @@ async function fetchWebData() {
 
     dbData.sort((a,b) => a.d.localeCompare(b.d));
     syncArrays();
-    alert(`✅ API 抓取完成！\n新增紀錄：${newRecords} 筆\n覆蓋更新：${updatedCount} 筆\n\n您可以前往檢視或匯出最新 CSV。`);
+    alert(`✅ API 抓取與補齊完成！\n新增/補齊紀錄：${newRecords} 筆\n覆蓋更新：${updatedCount} 筆\n\n您可以前往「總體績效」執行回測。`);
 
   } catch (error) {
     console.error(error);
-    alert("❌ 抓取過程發生錯誤：\n" + error.message + "\n\n請確認您的 CORS Proxy 是否正常運作，或者嘗試更換 Proxy 網址。");
+    alert("❌ 抓取過程發生錯誤：\n" + error.message + "\n\n請確認您的 Proxy 網址與金鑰是否正確。");
   } finally {
     document.getElementById('loadingOverlay').classList.add('hidden');
   }
@@ -617,8 +619,31 @@ function runBacktest() {
       yrData[yr].Ae = eqA; yrData[yr].Be = eqB; yrData[yr].bhe = bh;
     }
     
-    document.getElementById('liveA').innerHTML = `${getBadge(lastStatusA.m)} <span>${lastStatusA.s}分</span> <span style="font-size:12px;color:var(--muted)">(昨: ${lastStatusA.ps}分)</span> <span style="font-size:12px;color:var(--muted);margin-left:auto;">x${lastStatusA.p}倉</span>`;
-    document.getElementById('liveB').innerHTML = `${getBadge(lastStatusB.m)} <span>${lastStatusB.s}分</span> <span style="font-size:12px;color:var(--muted)">(昨: ${lastStatusB.ps}分)</span> <span style="font-size:12px;color:var(--muted);margin-left:auto;">x${lastStatusB.p}倉</span>`;
+    // ── V7.10 升級：動態趨勢與前日對照介面 ──
+    const getDeltaHtml = (s, ps) => {
+      let diff = s - ps;
+      let sign = diff >= 0 ? '+' + diff : diff;
+      let color = diff > 0 ? 'var(--green)' : (diff < 0 ? 'var(--red)' : 'var(--muted)');
+      let arrow = diff > 0 ? '▲' : (diff < 0 ? '▼' : '▬');
+      return `<div style="display:flex; flex-direction:column; align-items:flex-end;">
+                <span style="color:${color}; font-size:13px; font-weight:700;">${arrow} ${sign} 分</span>
+                <span style="font-size:11px; color:var(--muted);">(昨: ${ps}分)</span>
+              </div>`;
+    };
+
+    document.getElementById('liveA').innerHTML = `
+      ${getBadge(lastStatusA.m)} 
+      <span style="font-size:18px;">${lastStatusA.s}分</span> 
+      <div style="flex:1;"></div>
+      ${getDeltaHtml(lastStatusA.s, lastStatusA.ps)}
+      <span style="font-size:13px;color:var(--white);margin-left:8px;border-left:1px solid var(--border-hi);padding-left:8px;">x${lastStatusA.p}倉</span>`;
+      
+    document.getElementById('liveB').innerHTML = `
+      ${getBadge(lastStatusB.m)} 
+      <span style="font-size:18px;">${lastStatusB.s}分</span> 
+      <div style="flex:1;"></div>
+      ${getDeltaHtml(lastStatusB.s, lastStatusB.ps)}
+      <span style="font-size:13px;color:var(--white);margin-left:8px;border-left:1px solid var(--border-hi);padding-left:8px;">x${lastStatusB.p}倉</span>`;
 
     BT_RESULT = { cfg, curve, yrData, logs: logs.reverse(), mdd: { A:mddA, B:mddB, BH:mddBH } };
     renderUI();
@@ -646,7 +671,6 @@ function nextMode(shield, daysBelow, mCfg, strkCfg, posCfg, vNow, vPrev, rsi, zB
 }
 function lerp(x, x0, x1, y0, y1) { const t = Math.max(0, Math.min(1, (x-x0)/(x1-x0))); return y0 + (y1-y0)*t; }
 
-// ── UI 渲染 ──
 function getMetricCardHTML(title, p, cssClass) {
   const isPos = parseFloat(p.total) > 0;
   return `<div class="metric-card ${cssClass}"><div class="m-title">${title}</div><div class="m-row"><span>區間報酬</span><span class="m-val ${isPos?'ty':''}">${isPos?'+':''}${p.total}%</span></div><div class="m-row"><span>CAGR</span><span class="m-val">${p.cagr}%</span></div><div class="m-row"><span>MDD</span><span class="m-val tr">${p.mdd}%</span></div><div class="m-row"><span>StdDev</span><span class="m-val">${p.std}%</span></div><div class="m-row"><span>Sharpe</span><span class="m-val tg">${p.sharpe}</span></div></div>`;
