@@ -373,11 +373,13 @@ async function fetchWebData() {
   document.getElementById('loadingOverlay').classList.remove('hidden');
 
   try {
-    // 💡 FRED 官方支援 CORS，直接連線即可，不需經過 Proxy！
+    // 💡 將 FRED 與 Yahoo 都統一走 Proxy，徹底避開瀏覽器 CORS 阻擋
+    const getUrl = (targetUrl) => proxy ? proxy + encodeURIComponent(targetUrl) : targetUrl;
+
     const getFred = async (seriesId) => {
-      const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${key}&file_type=json`;
+      const url = getUrl(`https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${key}&file_type=json`);
       const res = await fetch(url);
-      if(!res.ok) throw new Error(`FRED 回傳錯誤 (代碼: ${res.status}) - 請確認金鑰有效或是否短時間內抓取太多次`);
+      if(!res.ok) throw new Error(`FRED API 連線失敗 (代碼: ${res.status})`);
       const json = await res.json();
       let dict = {};
       json.observations.forEach(o => {
@@ -386,12 +388,10 @@ async function fetchWebData() {
       return dict;
     };
 
-    // 💡 Yahoo Finance 不支援跨域，必須透過 Proxy
     const getYf = async (ticker) => {
-      const targetUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?range=2y&interval=1d`;
-      const url = proxy ? proxy + encodeURIComponent(targetUrl) : targetUrl;
+      const url = getUrl(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?range=2y&interval=1d`);
       const res = await fetch(url);
-      if(!res.ok) throw new Error(`Yahoo Finance 連線失敗 (代碼: ${res.status}) - Proxy 伺服器可能無回應`);
+      if(!res.ok) throw new Error(`Yahoo Finance 連線失敗 (代碼: ${res.status})`);
       const json = await res.json();
       let dict = {};
       const chart = json.chart.result[0];
