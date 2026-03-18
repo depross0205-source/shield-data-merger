@@ -117,8 +117,8 @@ input[type="file"]{display:none;}
         <h3>🤖 第二步 (選用)：自動連線更新與補齊</h3>
         <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">系統將自動對照過去 2 年股市交易日。若債市休假，將啟動<b>前值自動填補</b>，確保資料庫零斷層。</p>
         <div class="db-grid">
-          <div class="db-item" style="grid-column: span 2;"><label>FRED API 金鑰 <span style="color:var(--red);">*</span></label><input type="password" id="apiFredKey" placeholder="請填寫您的 32 位 FRED 金鑰"></div>
-          <div class="db-item" style="grid-column: span 2;"><label>專屬 Proxy URL</label><input type="text" id="apiProxy" value="https://api.allorigins.win/raw?url=" placeholder="預設使用公用 Proxy，可替換為 Cloudflare 網址"></div>
+          <div class="db-item" style="grid-column: span 2;"><label>FRED API 金鑰 <span style="color:var(--red);">*</span></label><input type="password" id="apiFredKey" value="258bf0113f3cc4ec207f3160731c459e" placeholder="請填寫您的 32 位 FRED 金鑰"></div>
+          <div class="db-item" style="grid-column: span 2;"><label>專屬 Proxy URL</label><input type="text" id="apiProxy" value="https://shield-proxy.depross0205.workers.dev?url=" placeholder="預設使用公用 Proxy，可替換為 Cloudflare 網址"></div>
           <div class="db-item" style="grid-column: span 2;"><label>手動輸入最新 CAPE 值</label><input type="number" step="0.01" id="apiCape" value="30.00"></div>
         </div>
         <button class="btn btn-primary" style="background:var(--blue);border-color:var(--blue);color:#000;" onclick="fetchWebData()">🔄 自動抓取並整併</button>
