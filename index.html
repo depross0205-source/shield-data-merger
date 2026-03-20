@@ -1,203 +1,594 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<title>矛與盾 V8.2 實戰版</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>矛與盾 V8.2</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-body{background:#0a0c10;color:#e2eaf8;font-family:sans-serif;padding:20px}
-.panel{background:#12161f;padding:15px;margin-bottom:15px;border:1px solid #333}
-button{padding:8px 16px;margin:6px}
-input{margin:4px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0c10;color:#e2eaf8;font-family:'IBM Plex Sans',sans-serif;padding:20px;font-size:14px;line-height:1.6}
+h2{color:#f8faff;margin-bottom:14px;font-size:20px;font-weight:900}
+.tabs{display:flex;border-bottom:2px solid #252d3d;margin-bottom:20px;overflow-x:auto;white-space:nowrap}
+.tab{padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;color:#6b7a99;border:none;border-bottom:3px solid transparent;background:none;transition:.15s;font-family:inherit}
+.tab.active{color:#7eb8ff;border-bottom-color:#7eb8ff}
+.panel{display:none}.panel.active{display:block}
+.step-block{border:1px solid #252d3d;margin-bottom:14px;background:#12161f}
+.step-header{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #252d3d;background:#1a2030}
+.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0}
+.s1{background:#7eb8ff;color:#000}.s2{background:#4d9fff;color:#000}.s3{background:#ffb830;color:#000}.s4{background:#00e5a0;color:#000}
+.step-title-text{font-weight:700;color:#f8faff;font-size:14px}
+.step-subtitle{font-size:12px;color:#6b7a99;margin-top:1px}
+.step-body{padding:14px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.field label{font-size:11px;color:#6b7a99;font-weight:700;text-transform:uppercase}
+input[type=text],input[type=number],input[type=date],select{
+background:#0a0c10;border:1px solid #3a4560;color:#e2eaf8;
+padding:8px 10px;border-radius:3px;font-size:13px;font-family:'IBM Plex Mono',monospace;width:100%}
+input:focus,select:focus{outline:none;border-color:#7eb8ff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.span2{grid-column:span 2}
+button{padding:10px 18px;border:none;border-radius:3px;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;transition:.15s;width:100%}
+.btn-blue{background:#4d9fff;color:#000}.btn-blue:hover{background:#7eb8ff}
+.btn-green{background:#00e5a0;color:#000}.btn-green:hover{background:#00ffb3}
+.btn-yellow{background:#ffb830;color:#000}.btn-yellow:hover{background:#ffd166}
+.btn-outline{background:transparent;border:2px solid #3a4560;color:#7eb8ff}.btn-outline:hover{border-color:#7eb8ff}
+.btn-run{background:#7eb8ff;color:#000;font-size:15px;padding:12px}
+.stat-row{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.stat-box{background:#0a0c10;border:1px solid #252d3d;padding:12px 14px;border-radius:3px;flex:1;min-width:160px}
+.stat-box .n{font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:#f8faff}
+.stat-box .s{font-size:11px;color:#6b7a99;margin-top:2px}
+.upload-label{display:block;background:#1a2030;border:2px dashed #3a4560;padding:14px;text-align:center;cursor:pointer;color:#7eb8ff;font-weight:700;border-radius:3px;margin-bottom:8px}
+.upload-label:hover{border-color:#7eb8ff}
+input[type=file]{display:none}
+#fetchLog{font-size:12px;color:#6b7a99;font-family:'IBM Plex Mono',monospace;margin-top:8px;min-height:18px;word-break:break-all}
+.cfg-panel{background:#1a2030;border:1px solid #3a4560;padding:14px;margin-bottom:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.cfg-box{background:#12161f;border:1px solid #252d3d;padding:12px;display:flex;flex-direction:column;gap:8px}
+.cfg-label{font-size:11px;font-weight:700;text-transform:uppercase;border-bottom:1px solid #252d3d;padding-bottom:6px;margin-bottom:2px}
+.cfg-row{display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.cfg-row input,.cfg-row select{width:70px;text-align:right}
+.cfg-row.wide input{width:100px}
+.toggles{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.toggles label{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:16px}
+.metric-card{background:#12161f;border:1px solid #252d3d;padding:14px}
+.metric-card.m-eq{border-top:3px solid #00e5a0}
+.metric-card.m-bh{border-top:3px solid #3d4a66}
+.m-title{font-size:12px;color:#6b7a99;font-weight:700;margin-bottom:10px;text-transform:uppercase}
+.m-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;border-bottom:1px dashed #252d3d;padding-bottom:3px}
+.m-row:last-child{border-bottom:none}
+.m-val{font-family:'IBM Plex Mono',monospace;font-weight:700}
+.chart-wrap{background:#12161f;border:1px solid #252d3d;padding:16px;margin-bottom:14px}
+.loading-overlay{position:fixed;inset:0;background:rgba(10,12,16,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:14px}
+.hidden{display:none}
+.spinner{width:36px;height:36px;border:3px solid #252d3d;border-top-color:#00e5a0;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loadingText{font-family:'IBM Plex Mono',monospace;font-size:13px;color:#6b7a99}
+.tg{color:#00e5a0;font-weight:700}.tr{color:#ff4d6d;font-weight:700}.ty{color:#ffb830;font-weight:700}.tc{color:#7eb8ff;font-weight:700}
 </style>
 </head>
 <body>
-<h2>🛡️ 矛與盾 V8.2（實戰版）</h2>
-<div class="panel">
-<h3>🔑 API 設定</h3>
-FRED Key: <input id="fred" value="YOUR_KEY"><br>
-Proxy: <input id="proxy" value="https://shield-proxy.depross0205.workers.dev?url=" size="60">
+
+<div class="loading-overlay hidden" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div id="loadingText">處理中...</div>
 </div>
-<div class="panel">
-<h3>⚙ 模組開關</h3>
-<label><input type="checkbox" id="useRegime" checked> Regime</label>
-<label><input type="checkbox" id="useV8" checked> V8</label>
-<label><input type="checkbox" id="useYC" checked> YC</label>
-<label><input type="checkbox" id="useVol"> Vol</label>
+
+<h2>🛡️ 矛與盾 V8.2</h2>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab(event,'db')">🗄️ 資料庫更新</button>
+  <button class="tab" onclick="switchTab(event,'bt')">⚙ 回測設定</button>
+  <button class="tab" onclick="switchTab(event,'result')">📊 回測結果</button>
 </div>
-<div class="panel">
-<button onclick="fetchData()">📡 抓資料</button>
-<button onclick="run()">▶ 回測</button>
+
+<div class="panel active" id="panel-db">
+
+  <div class="step-block">
+    <div class="step-header">
+      <div>
+        <div class="step-title-text">🔑 API 設定</div>
+        <div class="step-subtitle">步驟二自動抓取時使用</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="grid2">
+        <div class="field span2"><label>FRED API Key</label>
+          <input type="text" id="apiFredKey" value="258bf0113f3cc4ec207f3160731c459e" autocorrect="off" spellcheck="false">
+        </div>
+        <div class="field span2"><label>Proxy URL</label>
+          <input type="text" id="apiProxy" value="https://shield-proxy.depross0205.workers.dev?url=" autocorrect="off" spellcheck="false">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-header">
+      <span class="step-num s1">1</span>
+      <div>
+        <div class="step-title-text">上傳現有歷史資料庫</div>
+        <div class="step-subtitle">載入 CSV 作為基礎，後續步驟在此基礎上補齊</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <label class="upload-label" for="csvUpload">📂 點擊選擇 CSV 檔案</label>
+      <input type="file" id="csvUpload" accept=".csv" onchange="loadCSV(event)">
+      <div id="csvStatus" style="font-size:12px;color:#00e5a0;margin-bottom:10px;min-height:16px"></div>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="n" id="dbCount">0 筆</div>
+          <div class="s">記憶體資料庫</div>
+        </div>
+        <div class="stat-box">
+          <div class="n" id="dbRange" style="font-size:14px">--</div>
+          <div class="s">資料區間</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-header">
+      <span class="step-num s2">2</span>
+      <div>
+        <div class="step-title-text">自動抓取最新數據並補齊</div>
+        <div class="step-subtitle">從 FRED & Yahoo Finance 抓取，自動合併進記憶體資料庫</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="field"><label>本月 CAPE（手動查詢後填入）</label>
+        <input type="number" id="apiCape" value="36.50" step="0.1" style="width:140px">
+      </div>
+      <button class="btn-blue" onclick="fetchAndMerge()">🔄 自動抓取並整併</button>
+      <div id="fetchLog"></div>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-header">
+      <span class="step-num s3">3</span>
+      <div>
+        <div class="step-title-text">手動輸入今日最新數據</div>
+        <div class="step-subtitle">補上當天收盤數字，CAPE 留空自動沿用上一日</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="grid2">
+        <div class="field"><label>日期</label><input type="date" id="dbDate"></div>
+        <div class="field"><label>S&P 500</label><input type="number" id="dbSP" step="0.01"></div>
+        <div class="field"><label>VIX</label><input type="number" id="dbVIX" step="0.01"></div>
+        <div class="field"><label>HY 利差（原始值）</label><input type="number" id="dbHY" step="0.001"></div>
+        <div class="field"><label>TIPS 10Y (%)</label><input type="number" id="dbTIPS" step="0.01"></div>
+        <div class="field"><label>CAPE（可留空）</label><input type="number" id="dbCAPE" step="0.01" placeholder="沿用上日"></div>
+        <div class="field"><label>DGS10 (%)</label><input type="number" id="dbY10" step="0.01"></div>
+        <div class="field"><label>DGS2 (%)</label><input type="number" id="dbY2" step="0.01"></div>
+      </div>
+      <button class="btn-yellow" onclick="manualAdd()">💾 寫入記憶體資料庫</button>
+    </div>
+  </div>
+
+  <div class="step-block">
+    <div class="step-header">
+      <span class="step-num s4">4</span>
+      <div>
+        <div class="step-title-text">匯出完整最新資料庫</div>
+        <div class="step-subtitle">下載含所有欄位的完整 CSV，可下次直接上傳</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <button class="btn-green" onclick="exportCSV()">⬇ 下載 Shield_Database.csv</button>
+    </div>
+  </div>
+
 </div>
+
+<div class="panel" id="panel-bt">
+  <div class="cfg-panel">
+    <div class="cfg-box">
+      <div class="cfg-label" style="color:#ffb830">模組開關</div>
+      <div class="toggles">
+        <label><input type="checkbox" id="useRegime" checked> Regime</label>
+        <label><input type="checkbox" id="useV8" checked> V8 倉位</label>
+        <label><input type="checkbox" id="useYC" checked> YC 因子</label>
+      </div>
+      <div class="cfg-label" style="color:#e2eaf8;margin-top:4px">回測區間</div>
+      <div class="cfg-row wide"><span>開始</span><input type="date" id="cpStart" value="2003-01-01"></div>
+      <div class="cfg-row wide"><span>結束</span><input type="date" id="cpEnd" value="2026-12-31"></div>
+    </div>
+    <div class="cfg-box">
+      <div class="cfg-label" style="color:#00e5a0">Regime 門檻</div>
+      <div class="cfg-row"><span>RSI 牛 (>)</span><input type="number" id="regRsiOn" value="60"></div>
+      <div class="cfg-row"><span>RSI 熊 (&lt;)</span><input type="number" id="regRsiOff" value="40"></div>
+      <div class="cfg-row"><span>VIX 牛 (&lt;)</span><input type="number" id="regVixOn" value="20"></div>
+      <div class="cfg-row"><span>VIX 熊 (>)</span><input type="number" id="regVixOff" value="25"></div>
+    </div>
+    <div class="cfg-box">
+      <div class="cfg-label" style="color:#7eb8ff">盾牌分數 / 倉位</div>
+      <div class="cfg-row"><span>加碼門檻 (>)</span><input type="number" id="shieldHi" value="60"></div>
+      <div class="cfg-row"><span>減碼門檻 (&lt;)</span><input type="number" id="shieldLo" value="40"></div>
+      <div class="cfg-row"><span>倉位 ON</span><input type="number" id="posOn" value="1.5" step="0.1"></div>
+      <div class="cfg-row"><span>倉位 MID</span><input type="number" id="posMid" value="1.0" step="0.1"></div>
+      <div class="cfg-row"><span>倉位 短打</span><input type="number" id="posStrk" value="0.3" step="0.1"></div>
+      <div class="cfg-row"><span>VIX 短打 (>)</span><input type="number" id="strkVix" value="30"></div>
+    </div>
+  </div>
+  <button class="btn-run" onclick="runBacktest()">▶ 執行回測</button>
+</div>
+
+<div class="panel" id="panel-result">
+  <div class="metrics-grid" id="metricsGrid"></div>
+  <div class="chart-wrap"><canvas id="navChart" height="300"></canvas></div>
+</div>
+
 <script>
+'use strict';
 
-// ===== 全域 =====
-let SP=[], HY=[], VIX=[], TIPS=[], CAPE=[];
-let Y10=[], Y2=[];
+let DB = [];
+let navChart = null;
 
-// ===== 工具 =====
-const getUrl = (u)=>document.getElementById("proxy").value + encodeURIComponent(u);
+const lerp = (x,x0,x1,y0,y1) => y0+(y1-y0)*Math.max(0,Math.min(1,(x-x0)/(x1-x0)));
+const $ = id => document.getElementById(id);
+const setLog = (msg,ok) => {
+  const el=$('fetchLog'); if(!el) return;
+  el.textContent=msg; el.style.color=ok===true?'#00e5a0':ok===false?'#ff4d6d':'#6b7a99';
+};
 
-async function getFred(id){
-  let key=document.getElementById("fred").value;
-  let url=getUrl(`https://api.stlouisfed.org/fred/series/observations?series_id=${id}&api_key=${key}&file_type=json`);
-  let r=await fetch(url); let j=await r.json();
-  let d={};
-  j.observations.forEach(o=>{
-    if(o.value!==".") d[o.date]=parseFloat(o.value);
+function sortAndFill(){
+  DB.sort((a,b)=>a.d.localeCompare(b.d));
+  let last={sp:5000,vix:18,hy:3.5,tips:1.5,cape:30,y10:4.0,y2:3.8};
+  DB.forEach(r=>{
+    ['sp','vix','hy','tips','cape','y10','y2'].forEach(k=>{
+      if(r[k]==null||isNaN(r[k])) r[k]=last[k]; else last[k]=r[k];
+    });
   });
-  return d;
+  updateStatus();
 }
 
-async function getYF(t){
-  let url=getUrl(`https://query1.finance.yahoo.com/v8/finance/chart/${t}?range=5y&interval=1d`);
-  let r=await fetch(url); let j=await r.json();
-  let d={};
-  let tms=j.chart.result[0].timestamp;
-  let cls=j.chart.result[0].indicators.quote[0].close;
-  for(let i=0;i<tms.length;i++){
-    if(cls[i]){
-      let dt=new Date(tms[i]*1000).toISOString().slice(0,10);
-      d[dt]=cls[i];
+function updateStatus(){
+  $('dbCount').textContent = DB.length+' 筆';
+  $('dbRange').textContent = DB.length>0 ? DB[0].d+' → '+DB[DB.length-1].d : '--';
+  if(DB.length>0){
+    const last=DB[DB.length-1];
+    $('dbDate').value = new Date().toISOString().slice(0,10);
+    $('dbSP').value=last.sp.toFixed(2); $('dbVIX').value=last.vix.toFixed(2);
+    $('dbHY').value=last.hy.toFixed(4); $('dbTIPS').value=last.tips.toFixed(2);
+    $('dbY10').value=last.y10.toFixed(2); $('dbY2').value=last.y2.toFixed(2);
+    $('dbCAPE').value='';
+    $('cpStart').value=DB[0].d; $('cpEnd').value=last.d;
+  }
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  $('dbDate').value=new Date().toISOString().slice(0,10);
+});
+
+function loadCSV(event){
+  const file=event.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const lines=e.target.result.split('\n').filter(l=>l.trim());
+      const headers=lines[0].split(',').map(h=>h.trim().toUpperCase());
+      const gi=n=>headers.indexOf(n);
+      const idx={
+        d:gi('DATE'), sp:gi('SP500'), vix:gi('VIX'),
+        hy:gi('HY_SPREAD'), tips:gi('TIPS_10Y'),
+        cape:gi('CAPE'), y10:gi('DGS10'), y2:gi('DGS2')
+      };
+      if(idx.d<0||idx.sp<0){alert('找不到 DATE 或 SP500 欄位！');return;}
+      const rows=[];
+      for(let i=1;i<lines.length;i++){
+        const c=lines[i].split(','); if(c.length<4) continue;
+        const pf=k=>idx[k]>-1?parseFloat(c[idx[k]]):NaN;
+        rows.push({d:c[idx.d].trim(),sp:pf('sp'),vix:pf('vix'),
+          hy:pf('hy'),tips:pf('tips'),cape:pf('cape'),y10:pf('y10'),y2:pf('y2')});
+      }
+      rows.forEach(r=>{
+        const ei=DB.findIndex(x=>x.d===r.d);
+        if(ei>-1){
+          Object.entries(r).forEach(([k,v])=>{ if(k!=='d'&&!isNaN(v)) DB[ei][k]=v; });
+        } else { DB.push(r); }
+      });
+      sortAndFill();
+      $('csvStatus').textContent='✅ 已載入 '+rows.length+' 筆（含合併），共 '+DB.length+' 筆';
+    }catch(err){alert('CSV 解析錯誤：'+err.message);}
+  };
+  reader.readAsText(file);
+}
+
+async function fetchAndMerge(){
+  const key=$('apiFredKey').value.trim();
+  let proxy=$('apiProxy').value.trim();
+  const cape=parseFloat($('apiCape').value)||30;
+  if(!key){alert('請填寫 FRED API Key');return;}
+
+  if(proxy && !proxy.includes('url=')) {
+    proxy = proxy.endsWith('/') ? proxy+'?url=' : proxy+'/?url=';
+    $('apiProxy').value = proxy;
+  }
+
+  const PROXIES = [
+    proxy,
+    'https://api.allorigins.win/raw?url=',
+    'https://api.codetabs.com/v1/proxy?quest='
+  ].filter(Boolean);
+
+  $('loadingOverlay').classList.remove('hidden');
+  setLog('準備連線...');
+
+  const fetchWithFallback = async (targetUrl) => {
+    let lastErr;
+    for(const p of PROXIES){
+      try{
+        const isUrlParam = p.includes('url=') || p.includes('quest=');
+        const finalUrl = p + (isUrlParam ? encodeURIComponent(targetUrl) : targetUrl);
+        const res = await fetch(finalUrl);
+        if(res.ok) {
+          const contentType = res.headers.get("content-type");
+          if(contentType && contentType.includes("text/html")) {
+            throw new Error('Proxy 異常回傳 HTML ('+p.split('/')[2]+')');
+          }
+          return res;
+        }
+        lastErr = new Error('HTTP '+res.status+' ('+p.split('/')[2]+')');
+      }catch(e){ lastErr = e; }
     }
+    throw lastErr || new Error('所有 Proxy 均連線失敗');
+  };
+
+  const getFred = async id => {
+    setLog('抓取 FRED: '+id+'...'); $('loadingText').textContent='抓取 FRED: '+id;
+    const url='https://api.stlouisfed.org/fred/series/observations?series_id='+id+'&api_key='+key+'&file_type=json';
+    const res = await fetchWithFallback(url);
+    const j = await res.json();
+    if(j.error_message) throw new Error('FRED 錯誤: '+j.error_message);
+    const d={};
+    j.observations.forEach(o=>{ if(o.value!=='.') d[o.date]=parseFloat(o.value); });
+    return d;
+  };
+
+  const getYf = async ticker => {
+    setLog('抓取 Yahoo: '+ticker+'...'); $('loadingText').textContent='抓取 Yahoo: '+ticker;
+    const url='https://query1.finance.yahoo.com/v8/finance/chart/'+ticker+'?range=2y&interval=1d';
+    const res = await fetchWithFallback(url);
+    const j = await res.json();
+    const d={};
+    const chart = j.chart.result[0];
+    chart.timestamp.forEach((t,i)=>{
+      if(chart.indicators.quote[0].close[i])
+        d[new Date(t*1000).toISOString().slice(0,10)]=chart.indicators.quote[0].close[i];
+    });
+    return d;
+  };
+
+  try{
+    const spD   = await getYf('^GSPC');
+    const vixD  = await getYf('^VIX');
+    const hyD   = await getFred('BAMLH0A0HYM2');
+    const tipsD = await getFred('DFII10');
+    const y10D  = await getFred('DGS10');
+    const y2D   = await getFred('DGS2');
+
+    setLog('整併資料中...');
+    let added=0,updated=0,lHY=3.5,lT=1.5,l10=4.0,l2=3.8;
+    Object.keys(spD).sort().forEach(d=>{
+      if(hyD[d]!==undefined)   lHY=hyD[d];
+      if(tipsD[d]!==undefined) lT=tipsD[d];
+      if(y10D[d]!==undefined)  l10=y10D[d];
+      if(y2D[d]!==undefined)   l2=y2D[d];
+      if(!vixD[d]) return;
+      const row={d, sp:+spD[d].toFixed(4), vix:+vixD[d].toFixed(2),
+        hy:+lHY.toFixed(4), tips:+lT.toFixed(2), cape,
+        y10:+l10.toFixed(2), y2:+l2.toFixed(2)};
+      const ei=DB.findIndex(x=>x.d===d);
+      if(ei>-1){DB[ei]=row;updated++;} else{DB.push(row);added++;}
+    });
+    sortAndFill();
+    const msg='✅ 完成！新增 '+added+' 筆，更新 '+updated+' 筆。共 '+DB.length+' 筆';
+    setLog(msg,true);
+    alert(msg+'\n\n可前往「回測設定」執行推演。');
+  }catch(err){
+    const msg='❌ 抓取失敗：'+err.message;
+    setLog(msg,false); console.error(err);
+    alert(msg+'\n\n請確認：\n1. FRED API Key 是否正確\n2. Proxy URL 是否可用\n3. 網路連線是否正常');
+  }finally{
+    $('loadingOverlay').classList.add('hidden');
   }
-  return d;
 }
 
-// ===== 抓資料 =====
-async function fetchData(){
-
-alert("抓資料中...");
-
-let [sp,hy,vix,tips,y10,y2] = await Promise.all([
-  getYF("^GSPC"),
-  getFred("BAMLH0A0HYM2"),
-  getYF("^VIX"),
-  getFred("DFII10"),
-  getFred("DGS10"),
-  getFred("DGS2")
-]);
-
-let dates=Object.keys(sp).sort();
-
-SP=[];HY=[];VIX=[];TIPS=[];Y10=[];Y2=[];CAPE=[];
-
-let lastHY=4,lastT=1.5,last10=3,last2=2.5;
-
-dates.forEach(d=>{
-  if(hy[d]) lastHY=hy[d];
-  if(tips[d]) lastT=tips[d];
-  if(y10[d]) last10=y10[d];
-  if(y2[d]) last2=y2[d];
-
-  if(sp[d] && vix[d]){
-    SP.push(sp[d]);
-    HY.push(lastHY);
-    VIX.push(vix[d]);
-    TIPS.push(lastT);
-    Y10.push(last10);
-    Y2.push(last2);
-    CAPE.push(30);
+function manualAdd(){
+  const d=$('dbDate').value;
+  const sp=parseFloat($('dbSP').value);
+  const vix=parseFloat($('dbVIX').value);
+  const hy=parseFloat($('dbHY').value);
+  const tips=parseFloat($('dbTIPS').value);
+  const y10=parseFloat($('dbY10').value);
+  const y2=parseFloat($('dbY2').value);
+  if(!d||isNaN(sp)||isNaN(vix)||isNaN(hy)||isNaN(tips)){
+    alert('日期、SP500、VIX、HY、TIPS 為必填！'); return;
   }
-});
-
-alert("完成！資料筆數："+SP.length);
+  const lastCAPE=DB.length>0?DB[DB.length-1].cape:30;
+  const capeRaw=$('dbCAPE').value;
+  const cape=capeRaw===''||isNaN(parseFloat(capeRaw))?lastCAPE:parseFloat(capeRaw);
+  const row={d,sp,vix,hy,tips,cape,y10:isNaN(y10)?NaN:y10,y2:isNaN(y2)?NaN:y2};
+  const ei=DB.findIndex(x=>x.d===d);
+  if(ei>-1){DB[ei]=row;} else{DB.push(row);}
+  sortAndFill();
+  alert('✅ '+d+' 已'+(ei>-1?'覆蓋':'新增'));
 }
 
-// ===== RSI =====
-function rsi(i){
-  if(i<14) return 50;
+function exportCSV(){
+  if(DB.length===0){alert('記憶體無資料！請先完成步驟 1-2。');return;}
+  const header='Date,SP500,VIX,HY_Spread,TIPS_10Y,CAPE,DGS10,DGS2';
+  const rows=DB.map(r=>[
+    r.d,
+    (r.sp||0).toFixed(4),(r.vix||0).toFixed(2),(r.hy||0).toFixed(4),
+    (r.tips||0).toFixed(2),(r.cape||30).toFixed(2),
+    (r.y10||0).toFixed(2),(r.y2||0).toFixed(2)
+  ].join(','));
+  const blob=new Blob([[header,...rows].join('\n')],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='Shield_Database.csv';
+  a.style.display='none'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+function calcRSI(spArr,i,n=14){
+  if(i<n+1) return 50;
   let g=0,l=0;
-  for(let j=i-14;j<i;j++){
-    let d=SP[j+1]-SP[j];
-    if(d>0) g+=d; else l-=d;
+  for(let j=i-n;j<i;j++){const d=spArr[j+1]-spArr[j];if(d>0)g+=d;else l-=d;}
+  return 100-100/(1+g/(l||1e-9));
+}
+
+function getRegime(i,spArr,vixArr,y10Arr,y2Arr,cfg){
+  if(!cfg.use) return 'N';
+  const R=calcRSI(spArr,i), slope=y10Arr[i]-y2Arr[i], v=vixArr[i];
+  if(R>cfg.rsiOn&&slope>0&&v<cfg.vixOn) return 'ON';
+  if(R<cfg.rsiOff&&slope<0&&v>cfg.vixOff) return 'OFF';
+  return 'MID';
+}
+
+function getPos(shield,reg,rsiVal,vixVal,cfg){
+  if(!cfg.useV8){ return shield>cfg.shieldHi?1.5:shield>cfg.shieldLo?1:0; }
+  const max=reg==='ON'?cfg.posOn:reg==='OFF'?0.5:cfg.posMid;
+  if(reg==='OFF'&&shield<cfg.shieldLo) return 0;
+  if(reg!=='ON'&&rsiVal<35&&vixVal>cfg.strkVix) return cfg.posStrk;
+  return shield>cfg.shieldHi?max:shield>cfg.shieldLo?1:0;
+}
+
+function calcStats(curve){
+  if(curve.length<2) return {total:'--',cagr:'--',mdd:'--',sharpe:'--',std:'--'};
+  let peak=curve[0],mdd=0; const rets=[];
+  for(let i=1;i<curve.length;i++){
+    if(curve[i]>peak) peak=curve[i];
+    mdd=Math.min(mdd,(curve[i]-peak)/peak);
+    rets.push((curve[i]-curve[i-1])/curve[i-1]);
   }
-  let rs=g/(l||1);
-  return 100-100/(1+rs);
+  const yrs=Math.max(.1,curve.length/252);
+  const total=curve[curve.length-1]/curve[0]-1;
+  const cagr=Math.pow(1+total,1/yrs)-1;
+  const avg=rets.reduce((a,b)=>a+b,0)/rets.length;
+  const std=Math.sqrt(rets.reduce((a,b)=>a+(b-avg)**2,0)/rets.length)*Math.sqrt(252);
+  return{
+    total:(total*100).toFixed(1),cagr:(cagr*100).toFixed(2),
+    mdd:(mdd*100).toFixed(2),sharpe:std===0?'--':((avg*252)/std).toFixed(2),
+    std:(std*100).toFixed(2)
+  };
 }
 
-// ===== lerp =====
-function lerp(x,x0,x1,y0,y1){
-  let t=Math.max(0,Math.min(1,(x-x0)/(x1-x0)));
-  return y0+t*(y1-y0);
+function runBacktest(){
+  if(DB.length<30){alert('資料不足（< 30 筆），請先完成步驟 1-2。');return;}
+  const start=$('cpStart').value, end=$('cpEnd').value;
+  const slice=DB.filter(r=>r.d>=start&&r.d<=end);
+  if(slice.length<20){alert('區間資料不足（< 20 筆），請調整日期。');return;}
+
+  const cfg={
+    useRegime:$('useRegime').checked, useV8:$('useV8').checked, useYC:$('useYC').checked,
+    rsiOn:+$('regRsiOn').value, rsiOff:+$('regRsiOff').value,
+    vixOn:+$('regVixOn').value, vixOff:+$('regVixOff').value,
+    shieldHi:+$('shieldHi').value, shieldLo:+$('shieldLo').value,
+    posOn:+$('posOn').value, posMid:+$('posMid').value,
+    posStrk:+$('posStrk').value, strkVix:+$('strkVix').value,
+    use:true
+  };
+  cfg.use=cfg.useRegime;
+
+  $('loadingOverlay').classList.remove('hidden');
+  $('loadingText').textContent='回測運算中...';
+
+  setTimeout(()=>{
+    try{
+      const spA=slice.map(r=>r.sp), vixA=slice.map(r=>r.vix);
+      const hyA=slice.map(r=>r.hy), tipsA=slice.map(r=>r.tips);
+      const capeA=slice.map(r=>r.cape);
+      const y10A=slice.map(r=>r.y10), y2A=slice.map(r=>r.y2);
+      const dates=slice.map(r=>r.d);
+
+      let eq=100, bh=100;
+      const curve=[100], bhC=[100], labels=[dates[0]];
+      const initSP=spA[0];
+
+      for(let i=1;i<spA.length;i++){
+        const ret=(spA[i]-spA[i-1])/spA[i-1];
+        const f1=lerp((100/capeA[i])-tipsA[i],0,4,10,100);
+        const f5=lerp(hyA[i]*100,250,600,80,20);
+        let shield;
+        if(cfg.useYC){
+          const yc=lerp(y10A[i]-y2A[i],-1,2,20,100);
+          shield=f1*.5+f5*.3+yc*.2;
+        } else {
+          shield=f1*.5+f5*.5;
+        }
+        const rsiVal=calcRSI(spA,i);
+        const reg=getRegime(i,spA,vixA,y10A,y2A,cfg);
+        const pos=getPos(shield,reg,rsiVal,vixA[i],cfg);
+        eq*=(1+pos*ret);
+        bh=100*(spA[i]/initSP);
+        curve.push(eq); bhC.push(bh); labels.push(dates[i]);
+      }
+
+      const step=Math.max(1,Math.floor(labels.length/150));
+      const lblS=[],crvS=[],bhS=[];
+      for(let i=0;i<labels.length;i+=step){lblS.push(labels[i]);crvS.push(curve[i]);bhS.push(bhC[i]);}
+
+      const p=calcStats(curve), pb=calcStats(bhC);
+      $('metricsGrid').innerHTML=`
+        <div class="metric-card m-eq">
+          <div class="m-title">策略績效</div>
+          <div class="m-row"><span>區間報酬</span><span class="m-val ty">${p.total>=0?'+':''}${p.total}%</span></div>
+          <div class="m-row"><span>CAGR</span><span class="m-val">${p.cagr}%</span></div>
+          <div class="m-row"><span>MDD</span><span class="m-val tr">${p.mdd}%</span></div>
+          <div class="m-row"><span>Sharpe</span><span class="m-val tg">${p.sharpe}</span></div>
+          <div class="m-row"><span>StdDev</span><span class="m-val">${p.std}%</span></div>
+        </div>
+        <div class="metric-card m-bh">
+          <div class="m-title">B&H 基準</div>
+          <div class="m-row"><span>區間報酬</span><span class="m-val">${pb.total>=0?'+':''}${pb.total}%</span></div>
+          <div class="m-row"><span>CAGR</span><span class="m-val">${pb.cagr}%</span></div>
+          <div class="m-row"><span>MDD</span><span class="m-val tr">${pb.mdd}%</span></div>
+          <div class="m-row"><span>Sharpe</span><span class="m-val">${pb.sharpe}</span></div>
+          <div class="m-row"><span>StdDev</span><span class="m-val">${pb.std}%</span></div>
+        </div>`;
+
+      if(navChart){navChart.destroy();navChart=null;}
+      navChart=new Chart($('navChart').getContext('2d'),{
+        type:'line',
+        data:{labels:lblS,datasets:[
+          {label:'策略',data:crvS,borderColor:'#00e5a0',borderWidth:2,pointRadius:0,tension:.1},
+          {label:'B&H',data:bhS,borderColor:'#3a4560',borderWidth:1.5,pointRadius:0,tension:.1}
+        ]},
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          interaction:{mode:'index',intersect:false},
+          animation:{duration:300},
+          plugins:{legend:{labels:{color:'#6b7a99',boxWidth:10,font:{size:12}}}},
+          scales:{
+            x:{ticks:{color:'#6b7a99',maxTicksLimit:8,font:{size:11}},grid:{color:'#1a2030'}},
+            y:{ticks:{color:'#6b7a99',font:{size:11}},grid:{color:'#1a2030'}}
+          }
+        }
+      });
+
+      const tabs=document.querySelectorAll('.tab');
+      switchTab({target:tabs[2]},'result');
+
+    }catch(err){
+      alert('回測失敗：'+err.message); console.error(err);
+    }finally{
+      $('loadingOverlay').classList.add('hidden');
+    }
+  },80);
 }
 
-// ===== Regime =====
-function regime(i,use){
-  if(!use) return "N";
-  let R=rsi(i);
-  let slope=Y10[i]-Y2[i];
-  let v=VIX[i];
-  if(R>60 && slope>0 && v<20) return "ON";
-  if(R<40 && slope<0 && v>25) return "OFF";
-  return "MID";
+function switchTab(e,name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  if(e.target&&e.target.classList) e.target.classList.add('active');
+  const p=document.getElementById('panel-'+name); if(p) p.classList.add('active');
 }
-
-// ===== V8 =====
-function decide(i,shield,useV8,reg){
-
-  if(!useV8){
-    if(shield>60) return 1.5;
-    if(shield>40) return 1;
-    return 0;
-  }
-
-  let max=1;
-  if(reg==="ON") max=1.5;
-  if(reg==="OFF") max=0.5;
-
-  if(reg==="OFF" && shield<50) return 0;
-
-  if(reg!=="ON" && rsi(i)<35 && VIX[i]>30)
-    return 0.3;
-
-  if(shield>60) return max;
-  if(shield>40) return 1;
-
-  return 0;
-}
-
-// ===== 回測 =====
-function run(){
-
-let useReg=document.getElementById("useRegime").checked;
-let useV8=document.getElementById("useV8").checked;
-let useYC=document.getElementById("useYC").checked;
-
-let eq=100;
-let curve=[];
-
-for(let i=20;i<SP.length;i++){
-
-  let ret=(SP[i]-SP[i-1])/SP[i-1];
-
-  let f1=lerp((100/CAPE[i])-TIPS[i],0,4,10,100);
-  let f5=lerp(HY[i]*100,250,600,80,20);
-
-  let yc = useYC ? lerp(Y10[i]-Y2[i],-1,2,20,100) : 50;
-
-  let shield = f1*0.5 + f5*0.3 + yc*0.2;
-
-  let reg = regime(i,useReg);
-
-  let pos = decide(i,shield,useV8,reg);
-
-  eq *= (1 + pos*ret);
-  curve.push(eq);
-}
-
-// ===== 畫圖 =====
-new Chart(document.getElementById("chart"),{
-  type:"line",
-  data:{
-    labels:curve.map((_,i)=>i),
-    datasets:[{label:"Equity",data:curve}]
-  }
-});
-
-}
-
 </script>
+
 </body>
 </html>
-:::
