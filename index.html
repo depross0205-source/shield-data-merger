@@ -19,106 +19,93 @@
 body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:20px;line-height:1.6;font-size:14px}
 .mono{font-family:'IBM Plex Mono',monospace}
 .wrap{max-width:1200px;margin:0 auto}
-
-/* ── 頁首 ── */
-.hdr{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(–border-hi);padding-bottom:16px;margin-bottom:18px;flex-wrap:wrap;gap:10px}
-.hdr-title{font-size:20px;font-weight:900;color:var(–white);display:flex;align-items:center;gap:8px}
-.hdr-title .v{font-size:12px;font-weight:600;background:var(–accent);color:#000;padding:2px 8px;border-radius:3px}
-.hdr-sub{font-size:12px;color:var(–muted);margin-top:3px}
-
-/* ── 頁籤 ── */
-.tabs{display:flex;border-bottom:2px solid var(–border);margin-bottom:18px;overflow-x:auto;white-space:nowrap}
-.tab{padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;color:var(–muted);border:none;border-bottom:3px solid transparent;background:none;transition:.15s;font-family:inherit}
-.tab.active{color:var(–accent);border-bottom-color:var(–accent)}
+.hdr{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--border-hi);padding-bottom:16px;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.hdr-title{font-size:20px;font-weight:900;color:var(--white);display:flex;align-items:center;gap:8px}
+.hdr-title .v{font-size:12px;font-weight:600;background:var(--accent);color:#000;padding:2px 8px;border-radius:3px}
+.hdr-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.tabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:18px;overflow-x:auto;white-space:nowrap}
+.tab{padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);border:none;border-bottom:3px solid transparent;background:none;transition:.15s;font-family:inherit}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .panel{display:none}.panel.active{display:block}
-
-/* ── 步驟區塊 ── */
-.step-block{border:1px solid var(–border);margin-bottom:12px;background:var(–surface)}
-.step-header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(–border);background:var(–surface2)}
+.step-block{border:1px solid var(--border);margin-bottom:12px;background:var(--surface)}
+.step-header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface2)}
 .step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0}
-.sn1{background:var(–accent);color:#000}.sn2{background:var(–blue);color:#000}.sn3{background:var(–yellow);color:#000}.sn4{background:var(–green);color:#000}
-.step-title{font-weight:700;color:var(–white);font-size:13px}
-.step-sub{font-size:11px;color:var(–muted);margin-top:1px}
+.sn1{background:var(--accent);color:#000}.sn2{background:var(--blue);color:#000}.sn3{background:var(--yellow);color:#000}.sn4{background:var(--green);color:#000}
+.step-title{font-weight:700;color:var(--white);font-size:13px}
+.step-sub{font-size:11px;color:var(--muted);margin-top:1px}
 .step-body{padding:14px}
-
-/* ── 表單 ── */
 .field{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
-.field label{font-size:10px;color:var(–muted);font-weight:700;text-transform:uppercase}
+.field label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase}
 input[type=text],input[type=number],input[type=date],select{
-background:var(–bg);border:1px solid var(–border-hi);color:var(–white);
-padding:7px 9px;border-radius:3px;font-size:13px;font-family:‘IBM Plex Mono’,monospace;width:100%}
-input:focus,select:focus{outline:none;border-color:var(–accent)}
+  background:var(--bg);border:1px solid var(--border-hi);color:var(--white);
+  padding:7px 9px;border-radius:3px;font-size:13px;font-family:'IBM Plex Mono',monospace;width:100%}
+input:focus,select:focus{outline:none;border-color:var(--accent)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.span2{grid-column:span 2}
-
-/* ── 按鈕 ── */
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.span2{grid-column:span 2}.span3{grid-column:span 3}
 button{padding:10px 16px;border:none;border-radius:3px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;transition:.15s;width:100%}
-.btn-blue{background:var(–blue);color:#000}.btn-blue:hover{background:#7eb8ff}
-.btn-green{background:var(–green);color:#000}.btn-green:hover{background:#00ffb3}
-.btn-yellow{background:var(–yellow);color:#000}.btn-yellow:hover{background:#ffd166}
-.btn-outline{background:transparent;border:1px solid var(–border-hi);color:var(–accent)}.btn-outline:hover{border-color:var(–accent)}
-.btn-run{background:var(–accent);color:#000;font-size:15px;padding:12px;margin-top:8px}
-
-/* ── 統計框 ── */
+.btn-blue{background:var(--blue);color:#000}.btn-blue:hover{background:#7eb8ff}
+.btn-green{background:var(--green);color:#000}.btn-green:hover{background:#00ffb3}
+.btn-yellow{background:var(--yellow);color:#000}.btn-yellow:hover{background:#ffd166}
+.btn-outline{background:transparent;border:1px solid var(--border-hi);color:var(--accent)}.btn-outline:hover{border-color:var(--accent)}
+.btn-run{background:var(--accent);color:#000;font-size:15px;padding:12px;margin-top:8px}
 .stat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.stat-box{background:var(–bg);border:1px solid var(–border);padding:10px 14px;border-radius:3px;flex:1;min-width:140px}
-.stat-box .n{font-size:20px;font-weight:700;font-family:‘IBM Plex Mono’,monospace;color:var(–white)}
-.stat-box .s{font-size:11px;color:var(–muted);margin-top:2px}
-
-/* ── 上傳 ── */
-.upload-label{display:block;background:var(–surface2);border:2px dashed var(–border-hi);padding:12px;text-align:center;cursor:pointer;color:var(–accent);font-weight:700;border-radius:3px;margin-bottom:8px}
-.upload-label:hover{border-color:var(–accent)}
+.stat-box{background:var(--bg);border:1px solid var(--border);padding:10px 14px;border-radius:3px;flex:1;min-width:140px}
+.stat-box .n{font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--white)}
+.stat-box .s{font-size:11px;color:var(--muted);margin-top:2px}
+.upload-label{display:block;background:var(--surface2);border:2px dashed var(--border-hi);padding:12px;text-align:center;cursor:pointer;color:var(--accent);font-weight:700;border-radius:3px;margin-bottom:8px}
+.upload-label:hover{border-color:var(--accent)}
 input[type=file]{display:none}
-
-/* ── Log ── */
-#fetchLog{font-size:12px;color:var(–muted);font-family:‘IBM Plex Mono’,monospace;margin-top:8px;min-height:16px;word-break:break-all}
-
+#fetchLog{font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:8px;min-height:16px;word-break:break-all}
 /* ── 回測設定 ── */
 .cfg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
-.cfg-box{background:var(–surface);border:1px solid var(–border);padding:12px}
-.cfg-label{font-size:11px;font-weight:700;text-transform:uppercase;border-bottom:1px solid var(–border);padding-bottom:5px;margin-bottom:8px}
+.cfg-box{background:var(--surface);border:1px solid var(--border);padding:12px}
+.cfg-label{font-size:11px;font-weight:700;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:5px;margin-bottom:8px}
 .cfg-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:6px}
 .cfg-row input{width:65px;text-align:right}
 .cfg-row.wide input{width:110px}
-
+/* ── 模組開關 ── */
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px}
+.toggle-row:last-child{border-bottom:none}
+.tog{position:relative;width:38px;height:20px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0;position:absolute}
+.tog-sl{position:absolute;inset:0;background:var(--border-hi);border-radius:10px;transition:.2s;cursor:pointer}
+.tog-sl:before{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:var(--muted);left:3px;top:3px;transition:.2s}
+.tog input:checked+.tog-sl{background:var(--green-dim);border:1px solid var(--green)}
+.tog input:checked+.tog-sl:before{transform:translateX(18px);background:var(--green)}
+/* ── Regime 狀態標籤 ── */
+.regime-badge{display:inline-block;padding:1px 8px;border-radius:3px;font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace}
 /* ── 即時狀態卡 ── */
 .live-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:16px}
-.live-card{background:var(–surface);border:1px solid var(–border);padding:12px 14px}
+.live-card{background:var(--surface);border:1px solid var(--border);padding:12px 14px}
 .live-label{font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:8px}
 .live-main{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.live-score{font-size:18px;font-weight:700;font-family:‘IBM Plex Mono’,monospace}
-.live-delta{text-align:right;font-family:‘IBM Plex Mono’,monospace}
-.live-sub{display:flex;gap:6px;font-size:11px;color:var(–muted);font-family:‘IBM Plex Mono’,monospace}
+.live-score{font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace}
+.live-delta{text-align:right;font-family:'IBM Plex Mono',monospace}
+.live-sub{display:flex;gap:6px;font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
 .score-bar-row{display:flex;gap:6px;margin-top:6px}
-.score-bar{flex:1;height:3px;border-radius:2px;background:var(–border)}
+.score-bar{flex:1;height:3px;border-radius:2px;background:var(--border)}
 .score-bar .fill{height:100%;border-radius:2px}
-
-/* ── 績效卡 ── */
 .metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:16px}
-.metric-card{background:var(–surface);border:1px solid var(–border);padding:14px}
-.m-title{font-size:12px;color:var(–muted);font-weight:700;margin-bottom:10px;text-transform:uppercase}
-.m-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;border-bottom:1px dashed var(–border);padding-bottom:3px}
+.metric-card{background:var(--surface);border:1px solid var(--border);padding:14px}
+.m-title{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:10px;text-transform:uppercase}
+.m-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;border-bottom:1px dashed var(--border);padding-bottom:3px}
 .m-row:last-child{border-bottom:none}
-.m-val{font-family:‘IBM Plex Mono’,monospace;font-weight:700}
-
-/* ── 圖表/表格 ── */
-.chart-wrap{background:var(–surface);border:1px solid var(–border);padding:14px;margin-bottom:12px}
-.table-wrap{background:var(–surface);border:1px solid var(–border);overflow-x:auto;margin-bottom:12px;max-height:540px}
+.m-val{font-family:'IBM Plex Mono',monospace;font-weight:700}
+.chart-wrap{background:var(--surface);border:1px solid var(--border);padding:14px;margin-bottom:12px}
+.table-wrap{background:var(--surface);border:1px solid var(--border);overflow-x:auto;margin-bottom:12px;max-height:540px}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{padding:9px;color:var(–muted);text-align:left;background:var(–surface2);position:sticky;top:0;z-index:2}
-td{padding:9px;border-bottom:1px solid var(–border)}
-.tg{color:var(–green);font-weight:700}.tc{color:var(–accent);font-weight:700}
-.tr{color:var(–red);font-weight:700}.ty{color:var(–yellow);font-weight:700}.tp{color:var(–purple);font-weight:700}
-.log-row:hover{background:var(–surface2)}
-
-/* ── Loading ── */
+th{padding:9px;color:var(--muted);text-align:left;background:var(--surface2);position:sticky;top:0;z-index:2}
+td{padding:9px;border-bottom:1px solid var(--border)}
+.tg{color:var(--green);font-weight:700}.tc{color:var(--accent);font-weight:700}
+.tr{color:var(--red);font-weight:700}.ty{color:var(--yellow);font-weight:700}.tp{color:var(--purple);font-weight:700}
+.log-row:hover{background:var(--surface2)}
 .loading-overlay{position:fixed;inset:0;background:rgba(10,12,16,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:14px}
 .hidden{display:none}
-.spinner{width:36px;height:36px;border:3px solid var(–border);border-top-color:var(–green);border-radius:50%;animation:spin .7s linear infinite}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-#loadingText{font-family:‘IBM Plex Mono’,monospace;font-size:13px;color:var(–muted)}
+#loadingText{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted)}
 </style>
-
 </head>
 <body>
 
@@ -132,9 +119,12 @@ td{padding:9px;border-bottom:1px solid var(–border)}
 <div class="hdr">
   <div>
     <div class="hdr-title">🛡️ 矛與盾 <span class="v">V8.3</span></div>
-    <div class="hdr-sub">四步驟資料庫更新 ｜ A/B/C/D 四軌回測 ｜ 即時分數狀態</div>
+    <div class="hdr-sub">四步驟資料庫 ｜ A/B/C/D 四軌 ｜ Regime ｜ YC 因子 ｜ 即時分數狀態</div>
   </div>
-  <div id="dataSourceBadge" style="font-size:12px;padding:4px 12px;border:1px solid var(--border-hi);color:var(--muted);font-family:monospace;">● 初始模式</div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <span id="regimeBadge" style="font-size:12px;padding:3px 10px;border-radius:3px;font-family:monospace;background:var(--surface2);color:var(--muted);border:1px solid var(--border)">Regime: --</span>
+    <div id="dataSourceBadge" style="font-size:12px;padding:4px 12px;border:1px solid var(--border-hi);color:var(--muted);font-family:monospace;">● 初始模式</div>
+  </div>
 </div>
 
 <div class="tabs">
@@ -148,11 +138,9 @@ td{padding:9px;border-bottom:1px solid var(–border)}
 
 <div class="panel active" id="panel-db">
 
-  <!-- API 設定 -->
-
   <div class="step-block">
     <div class="step-header">
-      <div><div class="step-title">🔑 API 設定</div><div class="step-sub">步驟二自動抓取時使用</div></div>
+      <div><div class="step-title">🔑 API 設定</div><div class="step-sub">步驟二自動抓取使用</div></div>
     </div>
     <div class="step-body">
       <div class="grid2">
@@ -166,12 +154,10 @@ td{padding:9px;border-bottom:1px solid var(–border)}
     </div>
   </div>
 
-  <!-- 步驟一 -->
-
   <div class="step-block">
     <div class="step-header">
       <span class="step-num sn1">1</span>
-      <div><div class="step-title">上傳現有歷史資料庫</div><div class="step-sub">載入 CSV 作為基礎，後續步驟補齊</div></div>
+      <div><div class="step-title">上傳現有歷史資料庫</div><div class="step-sub">載入 CSV 作為基礎，後續補齊</div></div>
     </div>
     <div class="step-body">
       <label class="upload-label" for="csvUpload">📂 點擊選擇 CSV 檔案</label>
@@ -184,12 +170,10 @@ td{padding:9px;border-bottom:1px solid var(–border)}
     </div>
   </div>
 
-  <!-- 步驟二 -->
-
   <div class="step-block">
     <div class="step-header">
       <span class="step-num sn2">2</span>
-      <div><div class="step-title">自動抓取最新數據並補齊</div><div class="step-sub">FRED & Yahoo Finance → 自動合併進記憶體</div></div>
+      <div><div class="step-title">自動抓取最新數據並補齊</div><div class="step-sub">FRED & Yahoo Finance → 自動合併（含 DGS10/DGS2 殖利率曲線）</div></div>
     </div>
     <div class="step-body">
       <div class="field" style="margin-bottom:10px"><label>本月 CAPE（手動查詢後填入）</label>
@@ -200,12 +184,10 @@ td{padding:9px;border-bottom:1px solid var(–border)}
     </div>
   </div>
 
-  <!-- 步驟三 -->
-
   <div class="step-block">
     <div class="step-header">
       <span class="step-num sn3">3</span>
-      <div><div class="step-title">手動輸入今日最新數據</div><div class="step-sub">CAPE 留空自動沿用上一日</div></div>
+      <div><div class="step-title">手動輸入今日最新數據</div><div class="step-sub">CAPE 留空自動沿用上一日；DGS10/DGS2 供 YC 因子使用</div></div>
     </div>
     <div class="step-body">
       <div class="grid2">
@@ -215,6 +197,8 @@ td{padding:9px;border-bottom:1px solid var(–border)}
         <div class="field"><label>VIX</label><input type="number" id="dbVIX" step="0.01"></div>
         <div class="field"><label>HY 利差（原始值）</label><input type="number" id="dbHY" step="0.001"></div>
         <div class="field"><label>TIPS 10Y (%)</label><input type="number" id="dbTIPS" step="0.01"></div>
+        <div class="field"><label>DGS10 — 10年公債 (%)</label><input type="number" id="dbY10" step="0.01"></div>
+        <div class="field"><label>DGS2 — 2年公債 (%)</label><input type="number" id="dbY2" step="0.01"></div>
         <div class="field span2"><label>CAPE（可留空，沿用上日）</label>
           <input type="number" id="dbCAPE" step="0.01" placeholder="留空 = 沿用上日">
         </div>
@@ -223,12 +207,10 @@ td{padding:9px;border-bottom:1px solid var(–border)}
     </div>
   </div>
 
-  <!-- 步驟四 -->
-
   <div class="step-block">
     <div class="step-header">
       <span class="step-num sn4">4</span>
-      <div><div class="step-title">匯出完整最新資料庫</div><div class="step-sub">下載含所有欄位的完整 CSV，可下次直接上傳</div></div>
+      <div><div class="step-title">匯出完整最新資料庫</div><div class="step-sub">含所有欄位（含 DGS10/DGS2），可下次直接上傳</div></div>
     </div>
     <div class="step-body">
       <button class="btn-green" onclick="exportCSV()">⬇ 下載 Shield_Database.csv</button>
@@ -243,6 +225,7 @@ td{padding:9px;border-bottom:1px solid var(–border)}
   <div class="cfg-grid">
 
 ```
+<!-- 方法 A -->
 <div class="cfg-box">
   <div class="cfg-label" style="color:var(--yellow)">方法 A（Delta）</div>
   <div class="cfg-row"><span>加碼分數 (≥)</span><input type="number" id="cpA150" value="60"></div>
@@ -251,6 +234,7 @@ td{padding:9px;border-bottom:1px solid var(–border)}
   <div class="cfg-row"><span>Delta (bp)</span><input type="number" id="cpADelta" value="50"></div>
 </div>
 
+<!-- 方法 B -->
 <div class="cfg-box">
   <div class="cfg-label" style="color:var(--green)">方法 B（Z-Score）</div>
   <div class="cfg-row"><span>加碼分數 (≥)</span><input type="number" id="cpB150" value="60"></div>
@@ -259,22 +243,74 @@ td{padding:9px;border-bottom:1px solid var(–border)}
   <div class="cfg-row"><span>Z-Score</span><input type="number" id="cpBZ" value="1.5" step="0.1"></div>
 </div>
 
+<!-- 短打 & 倉位 -->
 <div class="cfg-box">
   <div class="cfg-label" style="color:var(--accent)">短打觸發條件</div>
   <div class="cfg-row"><span>週 RSI (&lt;)</span><input type="number" id="cpRsi" value="35"></div>
   <div class="cfg-row"><span>VIX (≥)</span><input type="number" id="cpVix" value="35"></div>
   <div class="cfg-row"><span>寬度 Z (≤)</span><input type="number" id="cpBias" value="-2.0" step="0.1"></div>
   <div class="cfg-label" style="color:var(--white);margin-top:8px">倉位設定</div>
-  <div class="cfg-row"><span>加碼倉位</span><input type="number" id="cpPosMax" value="1.5" step="0.1"></div>
-  <div class="cfg-row"><span>常態倉位</span><input type="number" id="cpPosBase" value="1.0" step="0.1"></div>
-  <div class="cfg-row"><span>短打倉位</span><input type="number" id="cpPosStrk" value="0.3" step="0.1"></div>
+  <div class="cfg-row"><span>加碼</span><input type="number" id="cpPosMax" value="1.5" step="0.1"></div>
+  <div class="cfg-row"><span>常態</span><input type="number" id="cpPosBase" value="1.0" step="0.1"></div>
+  <div class="cfg-row"><span>短打</span><input type="number" id="cpPosStrk" value="0.3" step="0.1"></div>
 </div>
 
+<!-- V8.2 模組開關 -->
+<div class="cfg-box">
+  <div class="cfg-label" style="color:var(--purple)">V8 模組開關</div>
+  <div class="toggle-row">
+    <span>Regime 市場環境</span>
+    <label class="tog"><input type="checkbox" id="useRegime" checked><span class="tog-sl"></span></label>
+  </div>
+  <div class="toggle-row">
+    <span>YC 殖利率曲線因子</span>
+    <label class="tog"><input type="checkbox" id="useYC" checked><span class="tog-sl"></span></label>
+  </div>
+  <div class="toggle-row">
+    <span>V8 動態倉位上限</span>
+    <label class="tog"><input type="checkbox" id="useV8" checked><span class="tog-sl"></span></label>
+  </div>
+  <div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.7;background:var(--surface2);padding:8px;border-radius:3px">
+    <b style="color:var(--white)">模組說明</b><br>
+    <span style="color:var(--purple)">Regime</span>：RSI+斜率+VIX 判斷牛熊<br>
+    <span style="color:var(--accent)">YC</span>：殖利率曲線斜率作為第三因子<br>
+    <span style="color:var(--green)">V8</span>：Regime 動態調整倉位上限
+  </div>
+</div>
+
+<!-- Regime 參數 -->
+<div class="cfg-box">
+  <div class="cfg-label" style="color:var(--purple)">Regime 門檻</div>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:8px">牛市（ON）：RSI > 且 YC斜率 > 0 且 VIX &lt;</div>
+  <div class="cfg-row"><span>RSI 牛 (>)</span><input type="number" id="regRsiOn" value="60"></div>
+  <div class="cfg-row"><span>VIX 牛 (&lt;)</span><input type="number" id="regVixOn" value="20"></div>
+  <div style="font-size:11px;color:var(--muted);margin:8px 0 6px">熊市（OFF）：RSI &lt; 且 YC斜率 &lt; 0 且 VIX ></div>
+  <div class="cfg-row"><span>RSI 熊 (&lt;)</span><input type="number" id="regRsiOff" value="40"></div>
+  <div class="cfg-row"><span>VIX 熊 (>)</span><input type="number" id="regVixOff" value="25"></div>
+  <div style="font-size:11px;color:var(--muted);margin:8px 0 6px">V8 倉位上限</div>
+  <div class="cfg-row"><span>ON 時最大倉</span><input type="number" id="regPosOn" value="1.5" step="0.1"></div>
+  <div class="cfg-row"><span>MID 時最大倉</span><input type="number" id="regPosMid" value="1.0" step="0.1"></div>
+  <div class="cfg-row"><span>OFF 時最大倉</span><input type="number" id="regPosOff" value="0.5" step="0.1"></div>
+</div>
+
+<!-- YC 參數 -->
+<div class="cfg-box">
+  <div class="cfg-label" style="color:var(--accent)">YC 殖利率曲線因子</div>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:8px">
+    YC 分數 = lerp(DGS10−DGS2, Lo, Hi, 20, 100)<br>
+    <span style="color:var(--yellow)">啟用時</span>：Shield = F1×50%+F5×30%+YC×20%<br>
+    <span style="color:var(--muted)">關閉時</span>：Shield = F1×50%+F5×50%
+  </div>
+  <div class="cfg-row"><span>斜率下界（→分數20）</span><input type="number" id="ycLo" value="-1.0" step="0.1"></div>
+  <div class="cfg-row"><span>斜率上界（→分數100）</span><input type="number" id="ycHi" value="2.0" step="0.1"></div>
+</div>
+
+<!-- 執行 -->
 <div class="cfg-box" style="display:flex;flex-direction:column">
   <div class="cfg-label" style="color:var(--white)">執行區間</div>
   <div class="cfg-row wide"><span>開始日期</span><input type="date" id="cpStart" value="2003-01-01"></div>
   <div class="cfg-row wide"><span>結束日期</span><input type="date" id="cpEnd" value="2026-12-31"></div>
-  <div style="margin-top:6px;background:var(--surface2);border:1px solid var(--border);padding:10px;font-size:12px;color:var(--muted);line-height:1.8">
+  <div style="margin-top:8px;font-size:11px;color:var(--muted);line-height:1.8;background:var(--surface2);padding:8px;border-radius:3px">
     <b style="color:var(--white)">四軌說明</b><br>
     <span style="color:var(--yellow)">A</span> Delta 滾動最小值判警<br>
     <span style="color:var(--green)">B</span> Z-Score 異常擴散判警<br>
@@ -286,19 +322,15 @@ td{padding:9px;border-bottom:1px solid var(–border)}
 ```
 
   </div>
-</div>
+</div><!-- panel-cfg -->
 
 <!-- ══════════════ 結果 ══════════════ -->
 
 <div class="panel" id="panel-result">
-  <!-- 即時狀態 -->
   <div class="live-grid" id="liveDash"></div>
-  <!-- 績效卡 -->
   <div class="metrics-grid" id="metricsGrid"></div>
-  <!-- 圖表 -->
   <div class="chart-wrap"><canvas id="navChart" height="320"></canvas></div>
   <div class="chart-wrap"><canvas id="ddChart" height="180"></canvas></div>
-  <!-- 逐年 -->
   <div class="table-wrap">
     <table><thead><tr id="yHead"></tr></thead><tbody id="yrBody"></tbody></table>
   </div>
@@ -308,7 +340,7 @@ td{padding:9px;border-bottom:1px solid var(–border)}
 
 <div class="panel" id="panel-logs">
   <div class="table-wrap">
-    <table id="historyTable">
+    <table>
       <thead><tr><th>日期</th><th>引擎</th><th>狀態轉換</th><th>大盤點位</th><th>當日分數</th><th>前日分數</th><th>連跌天數</th></tr></thead>
       <tbody id="historyBody"><tr><td colspan="7" style="text-align:center;color:var(--muted)">請先執行回測推演</td></tr></tbody>
     </table>
@@ -322,15 +354,16 @@ td{padding:9px;border-bottom:1px solid var(–border)}
 window.onerror = (m,u,l) => { alert('⚠️ 錯誤: '+m+'\n行: '+l); return false; };
 
 // ════════════════════════════════════════
-// 全域資料庫
+// 全域資料庫：{ d, sp, ew, hy, tips, vix, cape, y10, y2 }
 // ════════════════════════════════════════
-let DB = [];   // { d, sp, ew, hy, tips, vix, cape }
+let DB = [];
 let BT_RESULT = null;
 let charts = {};
 
 const lerp = (x,x0,x1,y0,y1) => y0+(y1-y0)*Math.max(0,Math.min(1,(x-x0)/(x1-x0)));
 const $ = id => document.getElementById(id);
 const gv = id => parseFloat($(id).value);
+const gc = id => $(id).checked;
 
 const setLog = (msg, ok) => {
   const el=$('fetchLog'); if(!el) return;
@@ -338,12 +371,11 @@ const setLog = (msg, ok) => {
   el.style.color = ok===true?'#00e5a0':ok===false?'#ff4d6d':'#6b7a99';
 };
 
-// ── 排序 + 前值填補 ──
 function sortAndFill(){
   DB.sort((a,b)=>a.d.localeCompare(b.d));
-  let last={sp:5000,ew:5000,vix:18,hy:3.5,tips:1.5,cape:30};
+  let last={sp:5000,ew:5000,vix:18,hy:3.5,tips:1.5,cape:30,y10:4.0,y2:3.8};
   DB.forEach(r=>{
-    ['sp','ew','vix','hy','tips','cape'].forEach(k=>{
+    ['sp','ew','vix','hy','tips','cape','y10','y2'].forEach(k=>{
       if(r[k]==null||isNaN(r[k])) r[k]=last[k]; else last[k]=r[k];
     });
   });
@@ -355,15 +387,13 @@ function updateStatus(){
   $('dbRange').textContent = DB.length>0 ? DB[0].d+' → '+DB[DB.length-1].d : '--';
   if(DB.length>0){
     const l=DB[DB.length-1];
-    $('dbDate').value = new Date().toISOString().slice(0,10);
-    $('dbSP').value=l.sp.toFixed(2);
-    $('dbEW').value=l.ew.toFixed(2);
-    $('dbVIX').value=l.vix.toFixed(2);
-    $('dbHY').value=l.hy.toFixed(4);
+    $('dbDate').value=new Date().toISOString().slice(0,10);
+    $('dbSP').value=l.sp.toFixed(2); $('dbEW').value=l.ew.toFixed(2);
+    $('dbVIX').value=l.vix.toFixed(2); $('dbHY').value=l.hy.toFixed(4);
     $('dbTIPS').value=l.tips.toFixed(2);
+    $('dbY10').value=l.y10.toFixed(2); $('dbY2').value=l.y2.toFixed(2);
     $('dbCAPE').value='';
-    $('cpStart').value=DB[0].d;
-    $('cpEnd').value=l.d;
+    $('cpStart').value=DB[0].d; $('cpEnd').value=l.d;
   }
 }
 
@@ -384,9 +414,10 @@ function loadCSV(event){
       const gi=n=>headers.indexOf(n);
       const idx={
         d:gi('DATE'), sp:gi('SP500'),
-        ew: gi('SP500EW')>-1 ? gi('SP500EW') : gi('EW'),
+        ew: gi('SP500EW')>-1?gi('SP500EW'):gi('EW'),
         hy:gi('HY_SPREAD'), tips:gi('TIPS_10Y'),
-        vix:gi('VIX'), cape:gi('CAPE')
+        vix:gi('VIX'), cape:gi('CAPE'),
+        y10:gi('DGS10'), y2:gi('DGS2')
       };
       if(idx.d<0||idx.sp<0){alert('找不到 DATE 或 SP500 欄位！');return;}
 
@@ -396,7 +427,8 @@ function loadCSV(event){
         const pf=k=>idx[k]>-1?parseFloat(c[idx[k]]):NaN;
         rows.push({d:c[idx.d].trim(),
           sp:pf('sp'), ew:idx.ew>-1?pf('ew'):pf('sp'),
-          hy:pf('hy'), tips:pf('tips'), vix:pf('vix'), cape:pf('cape')});
+          hy:pf('hy'), tips:pf('tips'), vix:pf('vix'), cape:pf('cape'),
+          y10:pf('y10'), y2:pf('y2')});
       }
       rows.forEach(r=>{
         const ei=DB.findIndex(x=>x.d===r.d);
@@ -452,61 +484,50 @@ async function fetchAndMerge(){
     setLog('抓取 FRED: '+id+'...');
     $('loadingText').textContent='抓取 FRED: '+id;
     const url='https://api.stlouisfed.org/fred/series/observations?series_id='+id+'&api_key='+key+'&file_type=json';
-    const res=await fetchFB(url);
-    const j=await res.json();
+    const res=await fetchFB(url); const j=await res.json();
     if(j.error_message) throw new Error('FRED: '+j.error_message);
-    const d={};
-    j.observations.forEach(o=>{if(o.value!=='.') d[o.date]=parseFloat(o.value);});
-    return d;
+    const d={}; j.observations.forEach(o=>{if(o.value!=='.') d[o.date]=parseFloat(o.value);}); return d;
   };
 
   const getYf = async ticker => {
     setLog('抓取 Yahoo: '+ticker+'...');
     $('loadingText').textContent='抓取 Yahoo: '+ticker;
     const url='https://query1.finance.yahoo.com/v8/finance/chart/'+ticker+'?range=2y&interval=1d';
-    const res=await fetchFB(url);
-    const j=await res.json();
-    const d={};
-    const chart=j.chart.result[0];
+    const res=await fetchFB(url); const j=await res.json();
+    const d={}, chart=j.chart.result[0];
     chart.timestamp.forEach((t,i)=>{
       if(chart.indicators.quote[0].close[i])
         d[new Date(t*1000).toISOString().slice(0,10)]=chart.indicators.quote[0].close[i];
-    });
-    return d;
+    }); return d;
   };
 
   try{
-    // 序列抓取，避免 Proxy 並發限流
+    // 序列抓取（避免 Proxy 並發限流）
     const spD  = await getYf('^GSPC');
     const ewD  = await getYf('RSP');
     const vixD = await getYf('^VIX');
     const hyD  = await getFred('BAMLH0A0HYM2');
     const tipD = await getFred('DFII10');
+    const y10D = await getFred('DGS10');
+    const y2D  = await getFred('DGS2');
 
     setLog('整併資料中...');
-    let added=0, updated=0, lHY=3.5, lT=1.5;
+    let added=0, updated=0, lHY=3.5, lT=1.5, l10=4.0, l2=3.8;
     Object.keys(spD).sort().forEach(d=>{
-      if(hyD[d]!==undefined) lHY=hyD[d];
-      if(tipD[d]!==undefined) lT=tipD[d];
+      if(hyD[d]!==undefined) lHY=hyD[d]; if(tipD[d]!==undefined) lT=tipD[d];
+      if(y10D[d]!==undefined) l10=y10D[d]; if(y2D[d]!==undefined) l2=y2D[d];
       if(!vixD[d]) return;
-      const row={d,
-        sp:+spD[d].toFixed(4),
-        ew:ewD[d]?+ewD[d].toFixed(4):+spD[d].toFixed(4),
-        vix:+vixD[d].toFixed(2),
-        hy:+lHY.toFixed(4),
-        tips:+lT.toFixed(2),
-        cape
-      };
+      const row={d, sp:+spD[d].toFixed(4), ew:ewD[d]?+ewD[d].toFixed(4):+spD[d].toFixed(4),
+        vix:+vixD[d].toFixed(2), hy:+lHY.toFixed(4), tips:+lT.toFixed(2),
+        cape, y10:+l10.toFixed(2), y2:+l2.toFixed(2)};
       const ei=DB.findIndex(x=>x.d===d);
       if(ei>-1){DB[ei]=row;updated++;} else{DB.push(row);added++;}
     });
     sortAndFill();
     const msg='✅ 完成！新增 '+added+' 筆，更新 '+updated+' 筆。共 '+DB.length+' 筆';
-    setLog(msg,true);
-    alert(msg+'\n\n可前往「回測設定」執行推演。');
+    setLog(msg,true); alert(msg+'\n\n可前往「回測設定」執行推演。');
   }catch(err){
-    setLog('❌ '+err.message,false);
-    console.error(err);
+    setLog('❌ '+err.message,false); console.error(err);
     alert('❌ 抓取失敗：'+err.message);
   }finally{
     $('loadingOverlay').classList.add('hidden');
@@ -518,35 +539,36 @@ async function fetchAndMerge(){
 // ════════════════════════════════════════
 function manualAdd(){
   const d=$('dbDate').value;
-  const sp=parseFloat($('dbSP').value);
-  const ew=parseFloat($('dbEW').value);
-  const vix=parseFloat($('dbVIX').value);
-  const hy=parseFloat($('dbHY').value);
+  const sp=parseFloat($('dbSP').value), ew=parseFloat($('dbEW').value);
+  const vix=parseFloat($('dbVIX').value), hy=parseFloat($('dbHY').value);
   const tips=parseFloat($('dbTIPS').value);
+  const y10=parseFloat($('dbY10').value), y2=parseFloat($('dbY2').value);
   if(!d||isNaN(sp)||isNaN(vix)||isNaN(hy)||isNaN(tips)){
     alert('日期、SP500、VIX、HY、TIPS 為必填！');return;
   }
   const lastCAPE=DB.length>0?DB[DB.length-1].cape:30;
   const capeRaw=$('dbCAPE').value;
   const cape=capeRaw===''||isNaN(parseFloat(capeRaw))?lastCAPE:parseFloat(capeRaw);
-  const row={d, sp, ew:isNaN(ew)?sp:ew, vix, hy, tips, cape};
+  const lastY10=DB.length>0?DB[DB.length-1].y10:4.0;
+  const lastY2=DB.length>0?DB[DB.length-1].y2:3.8;
+  const row={d, sp, ew:isNaN(ew)?sp:ew, vix, hy, tips, cape,
+    y10:isNaN(y10)?lastY10:y10, y2:isNaN(y2)?lastY2:y2};
   const ei=DB.findIndex(x=>x.d===d);
   if(ei>-1){DB[ei]=row;} else{DB.push(row);}
-  sortAndFill();
-  alert('✅ '+d+' 已'+(ei>-1?'覆蓋':'新增'));
+  sortAndFill(); alert('✅ '+d+' 已'+(ei>-1?'覆蓋':'新增'));
 }
 
 // ════════════════════════════════════════
-// 步驟四：匯出 CSV
+// 步驟四：匯出
 // ════════════════════════════════════════
 function exportCSV(){
   if(DB.length===0){alert('記憶體無資料！');return;}
-  const header='Date,SP500,SP500EW,HY_Spread,TIPS_10Y,VIX,CAPE';
+  const header='Date,SP500,SP500EW,HY_Spread,TIPS_10Y,VIX,CAPE,DGS10,DGS2';
   const rows=DB.map(r=>[
-    r.d,
-    (r.sp||0).toFixed(4),(r.ew||0).toFixed(4),
+    r.d, (r.sp||0).toFixed(4),(r.ew||0).toFixed(4),
     (r.hy||0).toFixed(4),(r.tips||0).toFixed(2),
-    (r.vix||0).toFixed(2),(r.cape||30).toFixed(2)
+    (r.vix||0).toFixed(2),(r.cape||30).toFixed(2),
+    (r.y10||0).toFixed(2),(r.y2||0).toFixed(2)
   ].join(','));
   const blob=new Blob([[header,...rows].join('\n')],{type:'text/csv;charset=utf-8;'});
   const a=document.createElement('a');
@@ -555,7 +577,7 @@ function exportCSV(){
 }
 
 // ════════════════════════════════════════
-// 回測引擎（V7.16 A/B/C/D 四軌）
+// 回測引擎工具函數
 // ════════════════════════════════════════
 function bdg(m){
   const map={
@@ -585,6 +607,7 @@ function calcP(cv,k){
     s:sd===0?'0':(ar*252/sd).toFixed(2),t:(tr*100).toFixed(1),sd:(sd*100).toFixed(2)};
 }
 
+// 狀態機：決定 PLUS/NORMAL/CLEAR/STRIKE
 function getMode(s,db,mc,strk,pc,vN,vP,rsi,zb,prv,lock){
   if(s>=mc.s100) return s>=mc.s150?{m:'PLUS',p:pc.max}:{m:'NORMAL',p:pc.base};
   if(lock&&prv==='STRIKE') return {m:'STRIKE',p:pc.strike};
@@ -595,9 +618,31 @@ function getMode(s,db,mc,strk,pc,vN,vP,rsi,zb,prv,lock){
   return {m:'NORMAL',p:pc.base};
 }
 
+// V8.2 Regime 判斷
+function getRegime(rsi, ycSlope, vix, cfg){
+  if(!cfg.useRegime) return 'N';
+  if(rsi>cfg.regRsiOn && ycSlope>0 && vix<cfg.regVixOn) return 'ON';
+  if(rsi<cfg.regRsiOff && ycSlope<0 && vix>cfg.regVixOff) return 'OFF';
+  return 'MID';
+}
+
+// V8.2 倉位調整（Regime 疊加在狀態機結果上）
+function applyRegime(stateResult, reg, cfg){
+  if(!cfg.useV8) return stateResult; // V8 關閉時直接使用狀態機倉位
+  const {m, p} = stateResult;
+  if(m==='CLEAR'||m==='STRIKE') return stateResult; // 清倉/短打不受 Regime 影響
+  // Regime 決定最大倉位上限
+  const regMax = reg==='ON'?cfg.regPosOn : reg==='OFF'?cfg.regPosOff : cfg.regPosMid;
+  // OFF 且分數低於清倉門檻 → 直接清倉
+  if(reg==='OFF' && p===0) return {m:'CLEAR',p:0};
+  return {m, p:Math.min(p, regMax)};
+}
+
+// ════════════════════════════════════════
+// 主回測引擎
+// ════════════════════════════════════════
 function runBacktest(){
   if(DB.length<30){alert('資料不足，請先完成步驟 1-2。');return;}
-
   const start=$('cpStart').value, end=$('cpEnd').value;
   const slice=DB.filter(r=>r.d>=start&&r.d<=end);
   if(slice.length<20){alert('區間資料不足，請調整日期。');return;}
@@ -607,7 +652,13 @@ function runBacktest(){
     A:{s150:gv('cpA150'),s100:gv('cpA100'),clearDays:gv('cpADays'),dlt:gv('cpADelta'),w:120},
     B:{s150:gv('cpB150'),s100:gv('cpB100'),clearDays:gv('cpBDays'),z:gv('cpBZ'),w:500},
     strk:{rsi:gv('cpRsi'),vix:gv('cpVix'),bias:gv('cpBias')},
-    pos:{max:gv('cpPosMax'),base:gv('cpPosBase'),strike:gv('cpPosStrk')}
+    pos:{max:gv('cpPosMax'),base:gv('cpPosBase'),strike:gv('cpPosStrk')},
+    // V8.2 模組
+    useRegime:gc('useRegime'), useYC:gc('useYC'), useV8:gc('useV8'),
+    regRsiOn:gv('regRsiOn'), regVixOn:gv('regVixOn'),
+    regRsiOff:gv('regRsiOff'), regVixOff:gv('regVixOff'),
+    regPosOn:gv('regPosOn'), regPosMid:gv('regPosMid'), regPosOff:gv('regPosOff'),
+    ycLo:gv('ycLo'), ycHi:gv('ycHi')
   };
 
   $('loadingOverlay').classList.remove('hidden');
@@ -615,19 +666,19 @@ function runBacktest(){
 
   setTimeout(()=>{
     try{
-      // 提取陣列
       const DATES=slice.map(r=>r.d), SP=slice.map(r=>r.sp), EW=slice.map(r=>r.ew);
       const HY=slice.map(r=>r.hy), TIPS=slice.map(r=>r.tips);
       const VIX=slice.map(r=>r.vix), CAPE=slice.map(r=>r.cape);
+      const Y10=slice.map(r=>r.y10), Y2=slice.map(r=>r.y2);
       const N=DATES.length;
 
-      // 狀態初始化
       const st={
-        A:{eq:cfg.cap,m:'NORMAL',p:cfg.pos.base,db:0,ps:100,s:100,f1:50,f5:50},
-        B:{eq:cfg.cap,m:'NORMAL',p:cfg.pos.base,db:0,ps:100,s:100,f1:50,f5:50},
+        A:{eq:cfg.cap,m:'NORMAL',p:cfg.pos.base,db:0,ps:100,s:100,f1:50,f5:50,yc:50},
+        B:{eq:cfg.cap,m:'NORMAL',p:cfg.pos.base,db:0,ps:100,s:100,f1:50,f5:50,yc:50},
         C:{eq:cfg.cap,m:'NORMAL',p:cfg.pos.base},
         D:{eq:cfg.cap,m:'NORMAL',p:cfg.pos.base},
-        BH:{eq:cfg.cap}
+        BH:{eq:cfg.cap},
+        regime:'N' // 儲存最後一筆 Regime 狀態
       };
       const cv=[],yrD={},logs=[];
       const mddArr={A:[],B:[],C:[],D:[],BH:[]};
@@ -639,8 +690,19 @@ function runBacktest(){
         const hN=HY[i]*100;
         const f1=lerp((100/CAPE[i])-TIPS[i],0,4,10,100);
         const f5b=lerp(hN,250,600,80,20);
+        const ycSlope=Y10[i]-Y2[i];
 
-        // 週 RSI
+        // ── 盾牌分數（YC 開關控制）──
+        let shieldBase;
+        let ycScore=50;
+        if(cfg.useYC){
+          ycScore=lerp(ycSlope,cfg.ycLo,cfg.ycHi,20,100);
+          shieldBase=f1*0.5+f5b*0.3+ycScore*0.2;
+        } else {
+          shieldBase=f1*0.5+f5b*0.5;
+        }
+
+        // ── 週 RSI ──
         let rsi=50;
         if(i>=70){
           const w=[SP[i]];
@@ -656,7 +718,7 @@ function runBacktest(){
           }
         }
 
-        // 寬度 Z
+        // ── 寬度 Z ──
         let zb=0;
         if(i>=20){
           const sl=[];
@@ -666,32 +728,41 @@ function runBacktest(){
           zb=(EW[i]/SP[i]-m)/sd;
         }
 
+        // ── Regime 判斷（共用）──
+        const reg=getRegime(rsi, ycSlope, VIX[i], cfg);
+        st.regime=reg;
+
         const pA=st.A.m, pB=st.B.m;
 
         // ── 方法 A ──
         let mA=hN;
         for(let j=Math.max(0,i-cfg.A.w);j<i;j++) if(HY[j]*100<mA) mA=HY[j]*100;
-        let sA=Math.round(f1*0.5+Math.max(0,f5b-((hN-mA)>=cfg.A.dlt?20:0))*0.5);
+        let sA=Math.round(shieldBase - (((hN-mA)>=cfg.A.dlt&&f5b<80)?10:0));
         if(isNaN(sA)) sA=st.A.ps;
         if(sA<cfg.A.s100) st.A.db++; else st.A.db=0;
-        const nA=getMode(sA,st.A.db,cfg.A,cfg.strk,cfg.pos,VIX[i],VIX[i-1]||VIX[i],rsi,zb,st.A.m,false);
+        let nA=getMode(sA,st.A.db,cfg.A,cfg.strk,cfg.pos,VIX[i],VIX[i-1]||VIX[i],rsi,zb,st.A.m,false);
+        nA=applyRegime(nA,reg,cfg); // V8 Regime 調整
         if(nA.m!==st.A.m) logs.push({d:DATES[i],mtd:'A',fm:st.A.m,to:nA.m,sp:SP[i].toFixed(1),s:sA,ps:st.A.ps,db:st.A.db});
         st.A.eq*=(1+nA.p*ret*(1-(nA.p!==st.A.p?cfg.cost:0)));
-        st.A.p=nA.p; st.A.m=nA.m; st.A.ps=sA; st.A.s=sA; st.A.f1=Math.round(f1); st.A.f5=Math.round(f5b);
+        st.A.p=nA.p; st.A.m=nA.m; st.A.ps=sA; st.A.s=sA;
+        st.A.f1=Math.round(f1); st.A.f5=Math.round(f5b); st.A.yc=Math.round(ycScore);
 
         // ── 方法 B ──
         const slB=HY.slice(Math.max(0,i-cfg.B.w),i);
         const mB=slB.reduce((a,b)=>a+b,0)/slB.length;
         const sdB=Math.sqrt(slB.reduce((a,b)=>a+(b-mB)**2,0)/slB.length)||1;
-        let sB=Math.round(f1*0.5+Math.max(0,f5b-(((HY[i]-mB)/sdB)>cfg.B.z?20:0))*0.5);
+        const zHY=(HY[i]-mB)/sdB;
+        let sB=Math.round(shieldBase - (zHY>cfg.B.z?10:0));
         if(isNaN(sB)) sB=st.B.ps;
         if(sB<cfg.B.s100) st.B.db++; else st.B.db=0;
-        const nB=getMode(sB,st.B.db,cfg.B,cfg.strk,cfg.pos,VIX[i],VIX[i-1]||VIX[i],rsi,zb,st.B.m,false);
+        let nB=getMode(sB,st.B.db,cfg.B,cfg.strk,cfg.pos,VIX[i],VIX[i-1]||VIX[i],rsi,zb,st.B.m,false);
+        nB=applyRegime(nB,reg,cfg); // V8 Regime 調整
         if(nB.m!==st.B.m) logs.push({d:DATES[i],mtd:'B',fm:st.B.m,to:nB.m,sp:SP[i].toFixed(1),s:sB,ps:st.B.ps,db:st.B.db});
         st.B.eq*=(1+nB.p*ret*(1-(nB.p!==st.B.p?cfg.cost:0)));
-        st.B.p=nB.p; st.B.m=nB.m; st.B.ps=sB; st.B.s=sB; st.B.f1=Math.round(f1); st.B.f5=Math.round(f5b);
+        st.B.p=nB.p; st.B.m=nB.m; st.B.ps=sB; st.B.s=sB;
+        st.B.f1=Math.round(f1); st.B.f5=Math.round(f5b); st.B.yc=Math.round(ycScore);
 
-        // ── 方法 C（雙態跟隨：只跟 NORMAL/CLEAR）──
+        // ── 方法 C（雙態跟隨）──
         const bA=(st.A.m==='NORMAL'||st.A.m==='PLUS');
         const bpA=(pA==='NORMAL'||pA==='PLUS');
         const bB=(st.B.m==='NORMAL'||st.B.m==='PLUS');
@@ -704,7 +775,7 @@ function runBacktest(){
         st.C.eq*=(1+nPC*ret*(1-(nPC!==st.C.p?cfg.cost:0)));
         st.C.p=nPC; st.C.m=nMC;
 
-        // ── 方法 D（全態跟隨：跟隨最保守狀態）──
+        // ── 方法 D（全態跟隨）──
         const cA=st.A.m!==pA, cB=st.B.m!==pB;
         let nMD=st.D.m;
         if(cA&&cB){
@@ -717,18 +788,14 @@ function runBacktest(){
         st.D.eq*=(1+nPD*ret*(1-(nPD!==st.D.p?cfg.cost:0)));
         st.D.p=nPD; st.D.m=nMD;
 
-        // B&H
         st.BH.eq=cfg.cap*(SP[i]/sp0);
-
         cv.push({d:DATES[i],A:st.A.eq,B:st.B.eq,C:st.C.eq,D:st.D.eq,BH:st.BH.eq});
 
-        // MDD 追蹤
         ['A','B','C','D','BH'].forEach(k=>{
           if(st[k].eq>pk[k]) pk[k]=st[k].eq;
           mddArr[k].push((st[k].eq-pk[k])/pk[k]*100);
         });
 
-        // 逐年
         const yr=DATES[i].slice(0,4);
         if(!yrD[yr]) yrD[yr]={};
         ['A','B','C','D','BH'].forEach(k=>{
@@ -743,8 +810,7 @@ function runBacktest(){
       alert('回測失敗：'+err.message); console.error(err);
     }finally{
       $('loadingOverlay').classList.add('hidden');
-      const tabs=document.querySelectorAll('.tab');
-      switchTab({target:tabs[2]},'result');
+      switchTab({target:document.querySelectorAll('.tab')[2]},'result');
     }
   },80);
 }
@@ -755,25 +821,38 @@ function runBacktest(){
 function renderUI(){
   const r=BT_RESULT, st=r.st;
 
-  // ── 即時狀態卡（含 F1/F5 分項）──
-  const liveCard = (k, title, color, showScore) => {
+  // ── Regime 徽章 ──
+  const regColor={'ON':'var(--green)','OFF':'var(--red)','MID':'var(--yellow)','N':'var(--muted)'};
+  const regLabel={'ON':'牛市 ON','OFF':'熊市 OFF','MID':'中性 MID','N':'停用'};
+  $('regimeBadge').textContent='Regime: '+(regLabel[st.regime]||'--');
+  $('regimeBadge').style.background=st.regime==='ON'?'var(--green-dim)':st.regime==='OFF'?'var(--red-dim)':st.regime==='MID'?'var(--yellow-dim)':'var(--surface2)';
+  $('regimeBadge').style.color=regColor[st.regime]||'var(--muted)';
+  $('regimeBadge').style.borderColor=regColor[st.regime]||'var(--border)';
+
+  // ── 即時狀態卡 ──
+  const liveCard=(k,title,color,showScore)=>{
     const s=showScore?st[k].s:'--';
     const ps=showScore?st[k].ps:'--';
     const delta=showScore?(st[k].s-st[k].ps):null;
-    const deltaHtml = delta!==null
-      ? `<div class="live-delta"><span style="color:${delta>0?'var(--green)':delta<0?'var(--red)':'var(--muted)'};font-size:12px;font-weight:700;">${delta>0?'▲ +':delta<0?'▼ ':''  }${delta}</span><br><span style="font-size:10px;color:var(--muted)">昨:${ps}</span></div>`
-      : '';
-    const scoreBarHtml = showScore ? `
+    const deltaHtml=delta!==null
+      ?`<div class="live-delta"><span style="color:${delta>0?'var(--green)':delta<0?'var(--red)':'var(--muted)'};font-size:12px;font-weight:700;">${delta>0?'▲ +':delta<0?'▼ ':''}${delta}</span><br><span style="font-size:10px;color:var(--muted)">昨:${ps}</span></div>`:'';
+    const hasYC=st[k].yc!==undefined;
+    const scoreBarHtml=showScore?`
       <div class="score-bar-row">
-        <div class="score-bar"><div class="fill" style="width:${Math.max(0,Math.min(100,st[k].f1||50))}%;background:var(--accent)"></div></div>
-        <div class="score-bar"><div class="fill" style="width:${Math.max(0,Math.min(100,st[k].f5||50))}%;background:var(--green)"></div></div>
+        <div class="score-bar" title="F1 ERP"><div class="fill" style="width:${Math.max(0,Math.min(100,st[k].f1||50))}%;background:var(--accent)"></div></div>
+        <div class="score-bar" title="F5 HY"><div class="fill" style="width:${Math.max(0,Math.min(100,st[k].f5||50))}%;background:var(--green)"></div></div>
+        ${hasYC?`<div class="score-bar" title="YC"><div class="fill" style="width:${Math.max(0,Math.min(100,st[k].yc||50))}%;background:var(--purple)"></div></div>`:''}
       </div>
-      <div class="live-sub"><span>F1(ERP) ${st[k].f1||'--'}分</span><span>F5(HY) ${st[k].f5||'--'}分</span></div>` : '';
+      <div class="live-sub">
+        <span>F1 ${st[k].f1||'--'}</span>
+        <span>F5 ${st[k].f5||'--'}</span>
+        ${hasYC?`<span>YC ${st[k].yc||'--'}</span>`:''}
+      </div>`:'';
     return `<div class="live-card">
       <div class="live-label" style="color:var(--${color})">${title}</div>
       <div class="live-main">
         ${bdg(st[k].m)}
-        <span class="live-score">${s !== '--' ? s+'分' : '聯集'}</span>
+        <span class="live-score">${s!=='--'?s+'分':'聯集'}</span>
         <div style="flex:1"></div>
         ${deltaHtml}
         <span style="font-size:12px;border-left:1px solid var(--border-hi);padding-left:8px;color:var(--white)">x${st[k].p}</span>
@@ -782,15 +861,14 @@ function renderUI(){
     </div>`;
   };
 
-  $('liveDash').innerHTML =
-    liveCard('A','方法 A（Delta）','yellow',true) +
-    liveCard('B','方法 B（Z-Score）','green',true) +
-    liveCard('C','方法 C（雙態跟隨）','accent',false) +
+  $('liveDash').innerHTML=
+    liveCard('A','方法 A（Delta）','yellow',true)+
+    liveCard('B','方法 B（Z-Score）','green',true)+
+    liveCard('C','方法 C（雙態跟隨）','accent',false)+
     liveCard('D','方法 D（全態跟隨）','purple',false);
 
   // ── 績效卡 ──
-  const trackDefs=[['A','方法 A','yellow'],['B','方法 B','green'],['C','方法 C','accent'],['D','方法 D','purple'],['BH','B&H 基準','muted']];
-  $('metricsGrid').innerHTML = trackDefs.map(([k,label,col])=>{
+  $('metricsGrid').innerHTML=[['A','方法 A','yellow'],['B','方法 B','green'],['C','方法 C','accent'],['D','方法 D','purple'],['BH','B&H 基準','muted']].map(([k,label,col])=>{
     const p=calcP(r.cv,k);
     return `<div class="metric-card" style="border-top:3px solid var(--${col})">
       <div class="m-title">${label}</div>
@@ -803,67 +881,47 @@ function renderUI(){
 
   // ── 圖表 ──
   if(charts.n){charts.n.destroy();charts.d.destroy();}
-  const scale={
-    x:{ticks:{color:'#6b7a99',maxTicksLimit:10},grid:{color:'#1a2030'}},
-    y:{ticks:{color:'#6b7a99'},grid:{color:'#1a2030'}}
-  };
+  const sc={x:{ticks:{color:'#6b7a99',maxTicksLimit:10},grid:{color:'#1a2030'}},y:{ticks:{color:'#6b7a99'},grid:{color:'#1a2030'}}};
   const leg={labels:{color:'#6b7a99',boxWidth:10,font:{size:11}}};
-  const commonOpt={responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},animation:{duration:300}};
-
-  const ds=(dataArr,label,color,w)=>({label,data:dataArr,borderColor:color,borderWidth:w,pointRadius:0});
-  charts.n=new Chart($('navChart').getContext('2d'),{
-    type:'line',
-    data:{labels:r.cv.map(x=>x.d),datasets:[
-      ds(r.cv.map(x=>x.A),'方法 A','#ffb830',2),
-      ds(r.cv.map(x=>x.B),'方法 B','#00e5a0',2),
-      ds(r.cv.map(x=>x.C),'方法 C','#7eb8ff',2),
-      ds(r.cv.map(x=>x.D),'方法 D','#b388ff',2),
-      ds(r.cv.map(x=>x.BH),'B&H','#3d4a66',1)
-    ]},
-    options:{...commonOpt,plugins:{legend:leg},scales:{...scale,y:{...scale.y,type:'logarithmic'}}}
-  });
-  charts.d=new Chart($('ddChart').getContext('2d'),{
-    type:'line',
-    data:{labels:r.cv.map(x=>x.d),datasets:[
-      ds(r.mdd.A,'A','#ffb830',1),ds(r.mdd.B,'B','#00e5a0',1),
-      ds(r.mdd.C,'C','#7eb8ff',1),ds(r.mdd.D,'D','#b388ff',1),
-      ds(r.mdd.BH,'BH','#3d4a66',1)
-    ]},
-    options:{...commonOpt,plugins:{legend:{display:false}},scales:scale}
-  });
+  const opt={responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},animation:{duration:300}};
+  const ds=(arr,label,color,w)=>({label,data:arr,borderColor:color,borderWidth:w,pointRadius:0});
+  charts.n=new Chart($('navChart').getContext('2d'),{type:'line',data:{labels:r.cv.map(x=>x.d),datasets:[
+    ds(r.cv.map(x=>x.A),'方法 A','#ffb830',2),ds(r.cv.map(x=>x.B),'方法 B','#00e5a0',2),
+    ds(r.cv.map(x=>x.C),'方法 C','#7eb8ff',2),ds(r.cv.map(x=>x.D),'方法 D','#b388ff',2),
+    ds(r.cv.map(x=>x.BH),'B&H','#3d4a66',1)
+  ]},options:{...opt,plugins:{legend:leg},scales:{...sc,y:{...sc.y,type:'logarithmic'}}}});
+  charts.d=new Chart($('ddChart').getContext('2d'),{type:'line',data:{labels:r.cv.map(x=>x.d),datasets:[
+    ds(r.mdd.A,'A','#ffb830',1),ds(r.mdd.B,'B','#00e5a0',1),
+    ds(r.mdd.C,'C','#7eb8ff',1),ds(r.mdd.D,'D','#b388ff',1),ds(r.mdd.BH,'BH','#3d4a66',1)
+  ]},options:{...opt,plugins:{legend:{display:false}},scales:sc}});
 
   // ── 逐年 ──
   $('yHead').innerHTML='<th>年份</th><th class="ty">A</th><th class="tg">B</th><th class="tc">C</th><th class="tp">D</th><th>B&H</th>';
   $('yrBody').innerHTML=Object.keys(r.yrD).sort().reverse().map(yr=>{
     const y=r.yrD[yr];
     const t=k=>((y[k].e/y[k].s-1)*100).toFixed(1);
-    const cl=k=>parseFloat(t(k))>=0;
-    return `<tr>
-      <td>${yr}</td>
-      <td class="${cl('A')?'ty':'tr'}">${t('A')}%</td>
-      <td class="${cl('B')?'tg':'tr'}">${t('B')}%</td>
-      <td class="${cl('C')?'tc':'tr'}">${t('C')}%</td>
-      <td class="${cl('D')?'tp':'tr'}">${t('D')}%</td>
-      <td class="${cl('BH')?'':'tr'}">${t('BH')}%</td>
-    </tr>`;
+    return `<tr><td>${yr}</td>
+      <td class="${parseFloat(t('A'))>=0?'ty':'tr'}">${t('A')}%</td>
+      <td class="${parseFloat(t('B'))>=0?'tg':'tr'}">${t('B')}%</td>
+      <td class="${parseFloat(t('C'))>=0?'tc':'tr'}">${t('C')}%</td>
+      <td class="${parseFloat(t('D'))>=0?'tp':'tr'}">${t('D')}%</td>
+      <td class="${parseFloat(t('BH'))>=0?'':'tr'}">${t('BH')}%</td></tr>`;
   }).join('');
 
   // ── 歷程 ──
-  const colMap={A:'yellow',B:'green',C:'accent',D:'purple'};
+  const cm={A:'yellow',B:'green',C:'accent',D:'purple'};
   $('historyBody').innerHTML=r.logs.length
-    ? r.logs.map(L=>`<tr class="log-row">
+    ?r.logs.map(L=>`<tr class="log-row">
         <td class="mono">${L.d}</td>
-        <td style="color:var(--${colMap[L.mtd]});font-weight:700;">方法 ${L.mtd}</td>
-        <td>${bdg(L.fm)} <span style="color:var(--muted);font-size:10px;">➔</span> ${bdg(L.to)}</td>
+        <td style="color:var(--${cm[L.mtd]});font-weight:700;">方法 ${L.mtd}</td>
+        <td>${bdg(L.fm)} <span style="color:var(--muted);font-size:10px">➔</span> ${bdg(L.to)}</td>
         <td class="mono">${L.sp}</td>
         <td class="mono" style="font-weight:700;color:var(--white)">${L.s}</td>
         <td class="mono" style="color:var(--muted)">${L.ps}</td>
-        <td class="mono">${L.db}</td>
-      </tr>`).join('')
-    : '<tr><td colspan="7" style="text-align:center;color:var(--muted)">區間內無切換紀錄</td></tr>';
+        <td class="mono">${L.db}</td></tr>`).join('')
+    :'<tr><td colspan="7" style="text-align:center;color:var(--muted)">區間內無切換紀錄</td></tr>';
 }
 
-// ── Tab ──
 function switchTab(e,name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
